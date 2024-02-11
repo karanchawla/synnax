@@ -33,10 +33,12 @@ import { Workspace } from "@/workspace";
 import "@/index.css";
 import "@synnaxlabs/media/dist/style.css";
 import "@synnaxlabs/pluto/dist/style.css";
+import { Badge } from "./version/Badge";
 
 const layoutRenderers = {
   main: LayoutMain,
   connectCluster: Cluster.Connect,
+  updateAvailable: Version.UpdateDialog,
   visualization: Vis.LayoutSelector,
   defineRange: Range.Define,
   getStarted: Layout.GetStarted,

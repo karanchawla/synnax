@@ -1,0 +1,10 @@
+/Users/adityasenthil/Desktop/synnax/delta/src-tauri/target/debug/deps/cargo_toml-89839f23aed53777.rmeta: /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/cargo_toml.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/afs.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/error.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/inheritable.rs
+
+/Users/adityasenthil/Desktop/synnax/delta/src-tauri/target/debug/deps/libcargo_toml-89839f23aed53777.rlib: /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/cargo_toml.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/afs.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/error.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/inheritable.rs
+
+/Users/adityasenthil/Desktop/synnax/delta/src-tauri/target/debug/deps/cargo_toml-89839f23aed53777.d: /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/cargo_toml.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/afs.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/error.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/inheritable.rs
+
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/cargo_toml.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/afs.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/error.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/cargo_toml-0.15.3/src/inheritable.rs:

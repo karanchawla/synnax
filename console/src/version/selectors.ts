@@ -9,7 +9,13 @@
 
 import { useMemoSelect } from "@/hooks";
 import { type StoreState } from "@/version/slice";
+import { SliceState } from "@synnaxlabs/drift";
 
 export const select = (state: StoreState): string => state.version.version;
 
+export const selectUpdate = (state: StoreState): boolean => state.version.updateAvailable;
+
 export const useSelect = (): string => useMemoSelect(select, []);
+
+export const useselectUpdate = (): boolean => useMemoSelect(selectUpdate, []);
+

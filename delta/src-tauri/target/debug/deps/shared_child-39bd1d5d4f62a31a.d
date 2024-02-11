@@ -1,0 +1,10 @@
+/Users/adityasenthil/Desktop/synnax/delta/src-tauri/target/debug/deps/shared_child-39bd1d5d4f62a31a.rmeta: /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/lib.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/sys/mod.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/sys/unix.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/unix.rs
+
+/Users/adityasenthil/Desktop/synnax/delta/src-tauri/target/debug/deps/libshared_child-39bd1d5d4f62a31a.rlib: /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/lib.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/sys/mod.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/sys/unix.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/unix.rs
+
+/Users/adityasenthil/Desktop/synnax/delta/src-tauri/target/debug/deps/shared_child-39bd1d5d4f62a31a.d: /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/lib.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/sys/mod.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/sys/unix.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/unix.rs
+
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/lib.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/sys/mod.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/sys/unix.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/shared_child-1.0.0/src/unix.rs:

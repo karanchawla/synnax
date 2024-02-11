@@ -37,6 +37,7 @@ import "@/cluster/Connect.css";
 
 const formSchema = synnaxPropsZ.extend({ name: z.string() });
 
+
 export const connectWindowLayout: Layout.LayoutState = {
   key: "connectCluster",
   windowKey: "connectCluster",
@@ -50,6 +51,7 @@ export const connectWindowLayout: Layout.LayoutState = {
     transparent: true,
   },
 };
+
 
 /**
  * ConnectCluster implements the LayoutRenderer component type to provide a form for

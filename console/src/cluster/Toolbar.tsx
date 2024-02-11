@@ -20,7 +20,7 @@ import {
 } from "@synnaxlabs/pluto";
 import { useDispatch } from "react-redux";
 
-import { connectWindowLayout } from "@/cluster/Connect";
+import { connectWindowLayout, } from "@/cluster/Connect";
 import { type RenderableCluster } from "@/cluster/core";
 import { useSelect, useSelectMany } from "@/cluster/selectors";
 import { setActive } from "@/cluster/slice";
@@ -46,6 +46,7 @@ const Content = (): ReactElement => {
     },
   ];
 
+
   const handleSelect = ([key]: string[]): void => {
     dispatch(setActive(key ?? null));
   };
@@ -68,6 +69,12 @@ const Content = (): ReactElement => {
     </Align.Space>
   );
 };
+
+
+
+
+
+
 
 const ListItem = ({
   entry: { key, name },

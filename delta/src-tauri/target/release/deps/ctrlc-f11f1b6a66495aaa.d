@@ -1,0 +1,11 @@
+/Users/adityasenthil/Desktop/synnax/delta/src-tauri/target/release/deps/ctrlc-f11f1b6a66495aaa.rmeta: /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/lib.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/error.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/platform/mod.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/platform/unix/mod.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/signal.rs
+
+/Users/adityasenthil/Desktop/synnax/delta/src-tauri/target/release/deps/libctrlc-f11f1b6a66495aaa.rlib: /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/lib.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/error.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/platform/mod.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/platform/unix/mod.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/signal.rs
+
+/Users/adityasenthil/Desktop/synnax/delta/src-tauri/target/release/deps/ctrlc-f11f1b6a66495aaa.d: /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/lib.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/error.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/platform/mod.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/platform/unix/mod.rs /Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/signal.rs
+
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/lib.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/error.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/platform/mod.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/platform/unix/mod.rs:
+/Users/adityasenthil/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ctrlc-3.4.0/src/signal.rs:
