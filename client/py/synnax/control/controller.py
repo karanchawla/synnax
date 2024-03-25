@@ -54,6 +54,12 @@ class Processor(Protocol):
     def process(self, state: Controller) -> Any:
         ...
 
+class NotCallableException(Exception):
+    def __init__(self, object):
+        Exception.__init__(self)
+
+
+
 
 class WaitUntil(Processor):
     event: Event
@@ -130,6 +136,10 @@ class Controller:
             ok = processor.event.wait(
                 timeout=TimeSpan(timeout).seconds if timeout else None
             )
+            if type(callback) != Callable:
+                raise Exception
+        except Exception:
+            print('Passed non-callback to Controller.wait_until()')
         finally:
             del self.receiver.processors[key]
         return ok
@@ -151,6 +161,7 @@ class Controller:
 
     def get(self, ch: ChannelKey | ChannelName) -> int | float:
         ch = retrieve_required(self.retriever, ch)[0]
+
         return self.receiver.state[ch.key]
 
     def __getitem__(self, item):
