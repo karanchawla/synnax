@@ -16,14 +16,18 @@ This page assumes you've already:
 
 ## Adding a New Cluster
 
-Adding a new cluster is as simple as clicking the **Add Cluster** button in the top
-right corner of the cluster toolbar and entering your connection parameters, as shown
-below.
+Connecting a new Synnax cluster is as simple as opening on the cluster dropdown in
+the bottom right corner, and clciking on the **Add** button in the top right corner of the
+dialog.
 
 <Video client:only="react" id="console/connect-a-cluster" />
 
-This will add a new cluster to the list and set it as active. The console continuously 
-monitors the connection to the cluster and displays it in the bottom right corner of the UI.
+You can use the **Test Connection** button to verify that the connection parameters are 
+correct and that the console can connect to the cluster. Then, click the **Done** button
+to add a new cluster to the list.
+
+The console will continuously monitor connection to the cluster and display it in the 
+bottom right corner of the UI.
 
 ### Parameters
 
@@ -75,6 +79,13 @@ started with the `--insecure` flag.
 ## Switching Clusters
 
 If you have multiple clusters, you can switch between them by double clicking on the
-cluster you'd like to to connect in the toolbar.
+cluster you'd like to to connect in the dropdown dialog.
 
 <Video client:only="react" id="console/switch-clusters" />
+
+## Removing a Cluster
+
+To remove a cluster from the console, right click on the cluster in the dropdown dialog
+and select **Remove**.
+
+<Video client:only="react" id="console/remove-cluster" />
