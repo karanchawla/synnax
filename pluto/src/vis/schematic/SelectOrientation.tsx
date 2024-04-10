@@ -16,7 +16,7 @@ import { Button as CoreButton } from "@/button";
 import { CSS } from "@/css";
 import { type Input } from "@/input";
 
-import "@/vis/pid/OrientationControl.css";
+import "@/vis/schematic/OrientationControl.css";
 
 export interface OrientationValue {
   inner: location.Outer;

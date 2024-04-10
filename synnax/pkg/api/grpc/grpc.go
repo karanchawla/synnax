@@ -51,20 +51,13 @@ func New() (a api.Transport, transports []fgrpc.BindableTransport) {
 	a.WorkspaceRename = fnoop.UnaryServer[api.WorkspaceRenameRequest, types.Nil]{}
 	a.WorkspaceSetLayout = fnoop.UnaryServer[api.WorkspaceSetLayoutRequest, types.Nil]{}
 
-	// PID
-	a.PIDCreate = fnoop.UnaryServer[api.PIDCreateRequest, api.PIDCreateResponse]{}
-	a.PIDDelete = fnoop.UnaryServer[api.PIDDeleteRequest, types.Nil]{}
-	a.PIDRetrieve = fnoop.UnaryServer[api.PIDRetrieveRequest, api.PIDRetrieveResponse]{}
-	a.PIDRename = fnoop.UnaryServer[api.PIDRenameRequest, types.Nil]{}
-	a.PIDSetData = fnoop.UnaryServer[api.PIDSetDataRequest, types.Nil]{}
-	a.PIDCopy = fnoop.UnaryServer[api.PIDCopyRequest, api.PIDCopyResponse]{}
-
-	// LINE PLOT
-	a.VisualizationCreate = fnoop.UnaryServer[api.VisualizationCreateRequest, api.VisualizationCreateResponse]{}
-	a.VisualizationRetrieve = fnoop.UnaryServer[api.VisualizationRetrieveRequest, api.VisualizationRetrieveResponse]{}
-	a.VisualizationDelete = fnoop.UnaryServer[api.VisualizationDeleteRequest, types.Nil]{}
-	a.VisualizationRename = fnoop.UnaryServer[api.VisualizationRenameRequest, types.Nil]{}
-	a.VisualizationSetData = fnoop.UnaryServer[api.VisualizationSetDataRequest, types.Nil]{}
+	// Vis
+	a.VisCreate = fnoop.UnaryServer[api.VisCreateRequest, api.VisCreateResponse]{}
+	a.VisDelete = fnoop.UnaryServer[api.VisDeleteRequest, types.Nil]{}
+	a.VisRetrieve = fnoop.UnaryServer[api.VisRetrieveRequest, api.VisRetrieveResponse]{}
+	a.VisRename = fnoop.UnaryServer[api.VisRenameRequest, types.Nil]{}
+	a.VisSetData = fnoop.UnaryServer[api.VisSetDataRequest, types.Nil]{}
+	a.VisCopy = fnoop.UnaryServer[api.VisCopyRequest, api.VisCopyResponse]{}
 
 	// LABEL
 	a.LabelCreate = fnoop.UnaryServer[api.LabelCreateRequest, api.LabelCreateResponse]{}

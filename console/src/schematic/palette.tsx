@@ -10,12 +10,12 @@
 import { Icon } from "@synnaxlabs/media";
 
 import { type Command } from "@/palette/Palette";
-import { create } from "@/pid/slice";
+import { create } from "@/schematic/slice";
 
 export const createCommand: Command = {
-  key: "create-pid",
-  name: "Create a PID",
-  icon: <Icon.PID />,
+  key: "create-schematic",
+  name: "Create a Schematic",
+  icon: <Icon.Schematic />,
   onSelect: ({ placeLayout: layoutPlacer }) => layoutPlacer(create({})),
 };
 

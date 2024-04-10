@@ -202,3 +202,19 @@ func (s *VisService) Delete(ctx context.Context, req VisDeleteRequest) (res type
 		return s.internal.NewWriter(tx).Delete(ctx, req.Keys...)
 	})
 }
+
+type VisCopyRequest struct {
+	Key      uuid.UUID `json:"key" msgpack:"key"`
+	Name     string    `json:"name" msgpack:"name"`
+	Snapshot bool      `json:"snapshot" msgpack:"snapshot"`
+}
+
+type VisCopyResponse struct {
+	Vis vis.Vis `json:"vis" msgpack:"vis"`
+}
+
+func (s *VisService) Copy(ctx context.Context, req VisCopyRequest) (res VisCopyResponse, err error) {
+	return res, s.WithTx(ctx, func(tx gorp.Tx) error {
+		return errors.Auto(s.internal.NewWriter(tx).Copy(ctx, req.Key, req.Name, req.Snapshot, &res.Vis))
+	})
+}

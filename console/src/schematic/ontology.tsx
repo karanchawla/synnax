@@ -13,8 +13,8 @@ import { Menu, Mosaic, Tree } from "@synnaxlabs/pluto";
 
 import { Layout } from "@/layout";
 import { Ontology } from "@/ontology";
-import { create, type State } from "@/pid/slice";
 import { Range } from "@/range";
+import { create, type State } from "@/schematic/slice";
 
 const TreeContextMenu: Ontology.TreeContextMenu = ({
   client,
@@ -30,7 +30,7 @@ const TreeContextMenu: Ontology.TreeContextMenu = ({
 
   const handleDelete = (): void => {
     void (async () => {
-      await client.workspaces.pid.delete(keys);
+      await client.workspaces.schematic.delete(keys);
       removeLayout(...keys);
       const next = Tree.removeNode({
         tree: state.nodes,
@@ -42,13 +42,19 @@ const TreeContextMenu: Ontology.TreeContextMenu = ({
 
   const handleCopy = (): void => {
     void (async () => {
-      const pids = await Promise.all(
+      const schematics = await Promise.all(
         resources.map(
           async (res) =>
-            await client.workspaces.pid.copy(res.id.key, res.name + " (copy)", false),
+            await client.workspaces.schematic.copy(
+              res.id.key,
+              res.name + " (copy)",
+              false,
+            ),
         ),
       );
-      const otgIDs = pids.map(({ key }) => new ontology.ID({ type: "pid", key }));
+      const otgIDs = schematics.map(
+        ({ key }) => new ontology.ID({ type: "schematic", key }),
+      );
       const otg = await client.ontology.retrieve(otgIDs);
       state.setResources([...state.resources, ...otg]);
       const nextTree = Tree.setNode({
@@ -64,13 +70,19 @@ const TreeContextMenu: Ontology.TreeContextMenu = ({
   const handleRangeSnapshot = (): void => {
     void (async () => {
       if (activeRange == null) return;
-      const pids = await Promise.all(
+      const schematics = await Promise.all(
         resources.map(
           async (res) =>
-            await client.workspaces.pid.copy(res.id.key, res.name + " (snap)", true),
+            await client.workspaces.schematic.copy(
+              res.id.key,
+              res.name + " (snap)",
+              true,
+            ),
         ),
       );
-      const otgsIDs = pids.map(({ key }) => new ontology.ID({ type: "pid", key }));
+      const otgsIDs = schematics.map(
+        ({ key }) => new ontology.ID({ type: "schematic", key }),
+      );
       const rangeID = new ontology.ID({ type: "range", key: activeRange.key });
       await client.ontology.moveChildren(
         new ontology.ID(parent.key),
@@ -114,7 +126,7 @@ const handleRename: Ontology.HandleTreeRename = ({
   store,
   state: { nodes, setNodes, resources, setResources },
 }) => {
-  void client.workspaces.pid.rename(id.key, name);
+  void client.workspaces.schematic.rename(id.key, name);
   store.dispatch(Layout.rename({ key: id.key, name }));
   const next = Tree.updateNode({
     tree: nodes,
@@ -132,13 +144,13 @@ const handleRename: Ontology.HandleTreeRename = ({
 
 const handleSelect: Ontology.HandleSelect = ({ client, selection, placeLayout }) => {
   void (async () => {
-    const pid = await client.workspaces.pid.retrieve(selection[0].id.key);
+    const schematic = await client.workspaces.schematic.retrieve(selection[0].id.key);
     placeLayout(
       create({
-        ...(pid.data as unknown as State),
-        key: pid.key,
-        name: pid.name,
-        snapshot: pid.snapshot,
+        ...(schematic.data as unknown as State),
+        key: schematic.key,
+        name: schematic.name,
+        snapshot: schematic.snapshot,
       }),
     );
   })();
@@ -152,11 +164,11 @@ const handleMosaicDrop: Ontology.HandleMosaicDrop = ({
   placeLayout,
 }) => {
   void (async () => {
-    const pid = await client.workspaces.pid.retrieve(id.key);
+    const schematic = await client.workspaces.schematic.retrieve(id.key);
     placeLayout(
       create({
-        name: pid.name,
-        ...(pid.data as unknown as State),
+        name: schematic.name,
+        ...(schematic.data as unknown as State),
         location: "mosaic",
         tab: {
           mosaicKey: nodeKey,
@@ -168,8 +180,8 @@ const handleMosaicDrop: Ontology.HandleMosaicDrop = ({
 };
 
 export const ONTOLOGY_SERVICE: Ontology.Service = {
-  type: "pid",
-  icon: <Icon.PID />,
+  type: "schematic",
+  icon: <Icon.Schematic />,
   hasChildren: false,
   haulItems: (r) => [
     {

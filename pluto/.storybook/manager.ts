@@ -99,7 +99,7 @@ const synnaxBase = {
       radius: 2,
       width: 1,
     },
-    pid: {
+    schematic: {
       elementStrokeWidth: 2,
     },
   },

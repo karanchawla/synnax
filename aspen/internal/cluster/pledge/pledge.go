@@ -278,8 +278,8 @@ func (j *juror) verdict(ctx context.Context, req Request) (err error) {
 	j.L.Debug("juror received proposal. making verdict", logID)
 	j.mu.Lock()
 	defer j.mu.Unlock()
-	for _, appID := range j.approvals {
-		if appID == req.Key {
+	for _, apvis := range j.approvals {
+		if apvis == req.Key {
 			j.L.Warn("juror rejected proposal. already approved for a different pledge", logID)
 			err = proposalRejected
 			return

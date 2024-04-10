@@ -13,7 +13,7 @@ import type { Meta, StoryFn } from "@storybook/react";
 
 import { Canvas } from "@/vis/canvas";
 import { Diagram } from "@/vis/diagram";
-import { Primitives } from "@/vis/pid/primitives";
+import { Primitives } from "@/vis/schematic/primitives";
 
 const story: Meta<typeof Diagram.Diagram> = {
   title: "Diagram",

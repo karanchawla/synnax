@@ -417,7 +417,7 @@ var file_v1_channel_proto_goTypes = []interface{}{
 	(*ChannelCreateRequest)(nil),    // 3: api.v1.ChannelCreateRequest
 	(*ChannelCreateResponse)(nil),   // 4: api.v1.ChannelCreateResponse
 }
-var file_v1_channel_proto_depIdxs = []int32{
+var file_v1_channel_proto_devisxs = []int32{
 	0, // 0: api.v1.ChannelRetrieveResponse.channels:type_name -> api.v1.Channel
 	0, // 1: api.v1.ChannelCreateRequest.channels:type_name -> api.v1.Channel
 	0, // 2: api.v1.ChannelCreateResponse.channels:type_name -> api.v1.Channel
@@ -510,11 +510,11 @@ func file_v1_channel_proto_init() {
 			NumServices:   2,
 		},
 		GoTypes:           file_v1_channel_proto_goTypes,
-		DependencyIndexes: file_v1_channel_proto_depIdxs,
+		DependencyIndexes: file_v1_channel_proto_devisxs,
 		MessageInfos:      file_v1_channel_proto_msgTypes,
 	}.Build()
 	File_v1_channel_proto = out.File
 	file_v1_channel_proto_rawDesc = nil
 	file_v1_channel_proto_goTypes = nil
-	file_v1_channel_proto_depIdxs = nil
+	file_v1_channel_proto_devisxs = nil
 }

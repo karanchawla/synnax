@@ -11,13 +11,11 @@ import { sendRequired, type UnaryClient } from "@synnaxlabs/freighter";
 import { toArray, unknownRecordZ, type UnknownRecord } from "@synnaxlabs/x";
 import { z } from "zod";
 
-import { workspaceKeyZ } from "@/workspace/client";
-
 const RETRIEVE_ENDPOINT = "/workspace/vis/retrieve";
-const CREATE_ENDPOINT = "/workspace/lineplot/create";
-const DELETE_ENDPOINT = "/workspace/lineplot/delete";
-const RENAME_ENDPOINT = "/workspace/lineplot/rename";
-const SET_DATA_ENDPOINT = "/workspace/lineplot/set-data";
+const CREATE_ENDPOINT = "/workspace/vis/create";
+const DELETE_ENDPOINT = "/workspace/vis/delete";
+const RENAME_ENDPOINT = "/workspace/vis/rename";
+const SET_DATA_ENDPOINT = "/workspace/vis/set-data";
 
 export const keyZ = z.string().uuid();
 export type Key = z.infer<typeof keyZ>;
@@ -44,7 +42,7 @@ export const newVisZ = visZ.partial({ key: true }).transform((p) => ({
 export type NewVisZ = z.input<typeof newVisZ>;
 
 const createReqZ = z.object({
-  workspace: workspaceKeyZ,
+  workspace: z.string(),
   vis: newVisZ.array(),
 });
 

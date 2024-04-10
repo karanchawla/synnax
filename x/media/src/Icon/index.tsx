@@ -151,7 +151,7 @@ export const Icon: IconType = {
   Loading: (p) => (
     <AiOutlineLoading {...p} className={clsx(p.className, "media--spin")} />
   ),
-  PID: FaStream,
+  Schematic: FaStream,
   Caret: {
     Right: AiFillCaretRight,
     Left: AiFillCaretLeft,
@@ -258,7 +258,7 @@ export interface IconType {
   Expand: IconFC;
   Visualize: IconFC;
   Cluster: IconFC;
-  PID: IconFC;
+  Schematic: IconFC;
   Settings: IconFC;
   Table: IconFC;
   Caret: {

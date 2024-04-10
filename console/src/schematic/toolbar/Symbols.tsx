@@ -14,25 +14,25 @@ import {
   useCallback,
 } from "react";
 
-import { Align, Text, PID, Theming, Haul, Input } from "@synnaxlabs/pluto";
+import { Align, Text, Schematic, Theming, Haul, Input } from "@synnaxlabs/pluto";
 import { List } from "@synnaxlabs/pluto/list";
 import { nanoid } from "nanoid/non-secure";
 import { useDispatch } from "react-redux";
 
 import { CSS } from "@/css";
-import { addElement } from "@/pid/slice";
+import { addElement } from "@/schematic/slice";
 
-import "@/pid/toolbar/Symbols.css";
+import "@/schematic/toolbar/Symbols.css";
 
-const LIST_DATA = Object.values(PID.SYMBOLS);
+const LIST_DATA = Object.values(Schematic.SYMBOLS);
 
 export const Symbols = ({ layoutKey }: { layoutKey: string }): ReactElement => {
   const dispatch = useDispatch();
   const theme = Theming.use();
 
   const handleAddElement = useCallback(
-    (variant: PID.Variant) => {
-      const spec = PID.SYMBOLS[variant];
+    (variant: Schematic.Variant) => {
+      const spec = Schematic.SYMBOLS[variant];
       const initialProps = spec.defaultProps(theme);
       dispatch(
         addElement({
@@ -58,9 +58,9 @@ export const Symbols = ({ layoutKey }: { layoutKey: string }): ReactElement => {
           {(p) => <Input.Text {...p} placeholder="Type to search..." size="small" />}
         </List.Filter>
       </Align.Space>
-      <List.Core<string, PID.Spec<any>>
+      <List.Core<string, Schematic.Spec<any>>
         direction="x"
-        className={CSS.B("pid-symbols")}
+        className={CSS.B("schematic-symbols")}
         wrap
       >
         {(p) => (
@@ -79,7 +79,7 @@ export const Symbols = ({ layoutKey }: { layoutKey: string }): ReactElement => {
 interface SymbolsButtonProps
   extends PropsWithChildren,
     ComponentPropsWithoutRef<"button"> {
-  el: PID.Spec<any>;
+  el: Schematic.Spec<any>;
   theme: Theming.Theme;
 }
 
@@ -95,14 +95,14 @@ const SymbolsButton = ({
   });
 
   const handleDragStart = useCallback(() => {
-    startDrag([{ type: "pid-element", key }]);
+    startDrag([{ type: "schematic-element", key }]);
   }, [key]);
 
   return (
     // @ts-expect-error - generic elements
     <Align.Space
       el="button"
-      className={CSS.BE("pid-symbols", "button")}
+      className={CSS.BE("schematic-symbols", "button")}
       justify="spaceBetween"
       align="center"
       draggable

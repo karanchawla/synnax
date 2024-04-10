@@ -8,7 +8,12 @@
 // included in the file licenses/APL.txt.
 
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { type Control, type Viewport, type Diagram, type PID } from "@synnaxlabs/pluto";
+import {
+  type Control,
+  type Viewport,
+  type Diagram,
+  type Schematic,
+} from "@synnaxlabs/pluto";
 import { Color } from "@synnaxlabs/pluto/color";
 import { type Theming } from "@synnaxlabs/pluto/theming";
 import { box, scale, xy, deep, migrate } from "@synnaxlabs/x";
@@ -18,7 +23,7 @@ import { v4 as uuidV4 } from "uuid";
 import { type Layout } from "@/layout";
 
 export type NodeProps = object & {
-  key: PID.Variant;
+  key: Schematic.Variant;
   color?: Color.Crude;
 };
 
@@ -61,10 +66,10 @@ export interface SliceState extends migrate.Migratable {
   mode: Viewport.Mode;
   copy: CopyBuffer;
   toolbar: ToolbarState;
-  pids: Record<string, State>;
+  schematics: Record<string, State>;
 }
 
-export const SLICE_NAME = "pid";
+export const SLICE_NAME = "schematic";
 
 export interface StoreState {
   [SLICE_NAME]: SliceState;
@@ -88,7 +93,7 @@ export const ZERO_SLICE_STATE: SliceState = {
   mode: "select",
   copy: { ...ZERO_COPY_BUFFER },
   toolbar: { activeTab: "symbols" },
-  pids: {},
+  schematics: {},
 };
 
 export interface SetViewportPayload {
@@ -199,18 +204,18 @@ export const { actions, reducer } = createSlice({
   initialState: ZERO_SLICE_STATE,
   reducers: {
     copySelection: (state, _: PayloadAction<CopySelectionPayload>) => {
-      // for each pid, find the keys of the selected nodes and edges
+      // for each schematic, find the keys of the selected nodes and edges
       // and add them to the copy buffer. Then get the props of each
       // selected node and edge and add them to the copy buffer.
-      const { pids } = state;
+      const { schematics } = state;
       const copyBuffer: CopyBuffer = {
         nodes: [],
         edges: [],
         props: {},
         pos: xy.ZERO,
       };
-      Object.values(pids).forEach((pid) => {
-        const { nodes, edges, props } = pid;
+      Object.values(schematics).forEach((schematic) => {
+        const { nodes, edges, props } = schematic;
         const selectedNodes = nodes.filter((node) => node.selected);
         const selectedEdges = edges.filter((edge) => edge.selected);
         copyBuffer.nodes = [...copyBuffer.nodes, ...selectedNodes];
@@ -235,11 +240,11 @@ export const { actions, reducer } = createSlice({
     pasteSelection: (state, { payload }: PayloadAction<PasteSelectionPayload>) => {
       const { pos, layoutKey } = payload;
       const console = xy.translation(state.copy.pos, pos);
-      const pid = state.pids[layoutKey];
+      const schematic = state.schematics[layoutKey];
       const keys: Record<string, string> = {};
       const nextNodes = state.copy.nodes.map((node) => {
         const key: string = nanoid();
-        pid.props[key] = state.copy.props[node.key];
+        schematic.props[key] = state.copy.props[node.key];
         keys[node.key] = key;
         return {
           ...node,
@@ -258,32 +263,32 @@ export const { actions, reducer } = createSlice({
           selected: true,
         };
       });
-      pid.edges = [
-        ...pid.edges.map((edge) => ({ ...edge, selected: false })),
+      schematic.edges = [
+        ...schematic.edges.map((edge) => ({ ...edge, selected: false })),
         ...nextEdges,
       ];
-      pid.nodes = [
-        ...pid.nodes.map((node) => ({ ...node, selected: false })),
+      schematic.nodes = [
+        ...schematic.nodes.map((node) => ({ ...node, selected: false })),
         ...nextNodes,
       ];
     },
     create: (state, { payload }: PayloadAction<CreatePayload>) => {
       const { key: layoutKey } = payload;
-      const pid = { ...ZERO_STATE, ...payload };
-      if (pid.snapshot) {
-        pid.editable = false;
-        clearSelections(pid);
+      const schematic = { ...ZERO_STATE, ...payload };
+      if (schematic.snapshot) {
+        schematic.editable = false;
+        clearSelections(schematic);
       }
-      state.pids[layoutKey] = pid;
+      state.schematics[layoutKey] = schematic;
       state.toolbar.activeTab = "symbols";
     },
     clearSelection: (state, { payload }: PayloadAction<ClearSelectionPayload>) => {
       const { layoutKey } = payload;
-      const pid = state.pids[layoutKey];
-      pid.nodes.forEach((node) => {
+      const schematic = state.schematics[layoutKey];
+      schematic.nodes.forEach((node) => {
         node.selected = false;
       });
-      pid.edges.forEach((edge) => {
+      schematic.edges.forEach((edge) => {
         edge.selected = false;
       });
       state.toolbar.activeTab = "symbols";
@@ -291,47 +296,51 @@ export const { actions, reducer } = createSlice({
     remove: (state, { payload }: PayloadAction<RemovePayload>) => {
       const { layoutKeys } = payload;
       layoutKeys.forEach((layoutKey) => {
-        const pid = state.pids[layoutKey];
-        if (pid.control === "acquired") pid.controlAcquireTrigger -= 1;
+        const schematic = state.schematics[layoutKey];
+        if (schematic.control === "acquired") schematic.controlAcquireTrigger -= 1;
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-        delete state.pids[layoutKey];
+        delete state.schematics[layoutKey];
       });
     },
     addElement: (state, { payload }: PayloadAction<AddElementPayload>) => {
       const { layoutKey, key, props, node } = payload;
-      const pid = state.pids[layoutKey];
-      if (!pid.editable) return;
-      pid.nodes.push({
+      const schematic = state.schematics[layoutKey];
+      if (!schematic.editable) return;
+      schematic.nodes.push({
         key,
         selected: false,
         position: xy.ZERO,
         ...node,
       });
-      pid.props[key] = props;
+      schematic.props[key] = props;
     },
     setElementProps: (state, { payload }: PayloadAction<SetElementPropsPayload>) => {
       const { layoutKey, key, props } = payload;
-      const pid = state.pids[layoutKey];
-      if (!pid.editable) return;
-      if (key in pid.props) {
-        pid.props[key] = { ...pid.props[key], ...props };
+      const schematic = state.schematics[layoutKey];
+      if (!schematic.editable) return;
+      if (key in schematic.props) {
+        schematic.props[key] = { ...schematic.props[key], ...props };
       } else {
-        const edge = pid.edges.findIndex((edge) => edge.key === key);
+        const edge = schematic.edges.findIndex((edge) => edge.key === key);
         if (edge !== -1) {
-          pid.edges[edge] = { ...pid.edges[edge], ...props };
+          schematic.edges[edge] = { ...schematic.edges[edge], ...props };
         }
       }
     },
     setNodes: (state, { payload }: PayloadAction<SetNodesPayload>) => {
       const { layoutKey, nodes, mode = "replace" } = payload;
-      const pid = state.pids[layoutKey];
-      if (mode === "replace") pid.nodes = nodes;
+      const schematic = state.schematics[layoutKey];
+      if (mode === "replace") schematic.nodes = nodes;
       else {
         const keys = nodes.map((node) => node.key);
-        pid.nodes = [...pid.nodes.filter((node) => !keys.includes(node.key)), ...nodes];
+        schematic.nodes = [
+          ...schematic.nodes.filter((node) => !keys.includes(node.key)),
+          ...nodes,
+        ];
       }
       const anySelected =
-        nodes.some((node) => node.selected) || pid.edges.some((edge) => edge.selected);
+        nodes.some((node) => node.selected) ||
+        schematic.edges.some((edge) => edge.selected);
       if (anySelected) {
         if (state.toolbar.activeTab !== "properties")
           clearOtherSelections(state, layoutKey);
@@ -340,31 +349,32 @@ export const { actions, reducer } = createSlice({
     },
     setNodePositions: (state, { payload }: PayloadAction<SetNodePositionsPayload>) => {
       const { layoutKey, positions } = payload;
-      const pid = state.pids[layoutKey];
+      const schematic = state.schematics[layoutKey];
       Object.entries(positions).forEach(([key, position]) => {
-        const node = pid.nodes.find((node) => node.key === key);
+        const node = schematic.nodes.find((node) => node.key === key);
         if (node == null) return;
         node.position = position;
       });
     },
     setEdges: (state, { payload }: PayloadAction<SetEdgesPayload>) => {
       const { layoutKey, edges } = payload;
-      const pid = state.pids[layoutKey];
+      const schematic = state.schematics[layoutKey];
       // check for new edges
-      const prevKeys = pid.edges.map((edge) => edge.key);
+      const prevKeys = schematic.edges.map((edge) => edge.key);
       const newEdges = edges.filter((edge) => !prevKeys.includes(edge.key));
       newEdges.forEach((edge) => {
-        const source = pid.nodes.find((node) => node.key === edge.source);
-        const target = pid.nodes.find((node) => node.key === edge.target);
+        const source = schematic.nodes.find((node) => node.key === edge.source);
+        const target = schematic.nodes.find((node) => node.key === edge.target);
         if (source == null || target == null) return;
-        const sourceProps = pid.props[source.key];
-        const targetProps = pid.props[target.key];
+        const sourceProps = schematic.props[source.key];
+        const targetProps = schematic.props[target.key];
         if (sourceProps.color === targetProps.color && sourceProps.color != null)
           edge.color = sourceProps.color;
       });
-      pid.edges = edges;
+      schematic.edges = edges;
       const anySelected =
-        edges.some((edge) => edge.selected) || pid.nodes.some((node) => node.selected);
+        edges.some((edge) => edge.selected) ||
+        schematic.nodes.some((node) => node.selected);
       if (anySelected) {
         if (state.toolbar.activeTab !== "properties")
           clearOtherSelections(state, layoutKey);
@@ -380,32 +390,33 @@ export const { actions, reducer } = createSlice({
     },
     setViewport: (state, { payload }: PayloadAction<SetViewportPayload>) => {
       const { layoutKey, viewport } = payload;
-      const pid = state.pids[layoutKey];
-      pid.viewport = viewport;
+      const schematic = state.schematics[layoutKey];
+      schematic.viewport = viewport;
     },
     setEditable: (state, { payload }: PayloadAction<SetEditablePayload>) => {
       const { layoutKey, editable } = payload;
-      const pid = state.pids[layoutKey];
-      clearSelections(pid);
-      if (pid.control === "acquired") {
-        pid.controlAcquireTrigger -= 1;
+      const schematic = state.schematics[layoutKey];
+      clearSelections(schematic);
+      if (schematic.control === "acquired") {
+        schematic.controlAcquireTrigger -= 1;
       }
-      if (pid.snapshot) return;
-      pid.editable = editable;
+      if (schematic.snapshot) return;
+      schematic.editable = editable;
     },
     toggleControl: (state, { payload }: PayloadAction<ToggleControlPayload>) => {
       let { layoutKey, status } = payload;
-      const pid = state.pids[layoutKey];
-      if (status == null) status = pid.control === "released" ? "acquired" : "released";
-      if (status === "released") pid.controlAcquireTrigger -= 1;
-      else pid.controlAcquireTrigger += 1;
+      const schematic = state.schematics[layoutKey];
+      if (status == null)
+        status = schematic.control === "released" ? "acquired" : "released";
+      if (status === "released") schematic.controlAcquireTrigger -= 1;
+      else schematic.controlAcquireTrigger += 1;
     },
     setControlStatus: (state, { payload }: PayloadAction<SetControlStatusPayload>) => {
       const { layoutKey, control } = payload;
-      const pid = state.pids[layoutKey];
-      if (pid == null) return;
-      pid.control = control;
-      if (control === "acquired") pid.editable = false;
+      const schematic = state.schematics[layoutKey];
+      if (schematic == null) return;
+      schematic.control = control;
+      if (control === "acquired") schematic.editable = false;
     },
     setViewportMode: (
       state,
@@ -415,14 +426,14 @@ export const { actions, reducer } = createSlice({
     },
     setRemoteCreated: (state, { payload }: PayloadAction<SetRemoteCreatedPayload>) => {
       const { layoutKey } = payload;
-      const pid = state.pids[layoutKey];
-      pid.remoteCreated = true;
+      const schematic = state.schematics[layoutKey];
+      schematic.remoteCreated = true;
     },
     fixThemeContrast: (state, { payload }: PayloadAction<FixThemeContrastPayload>) => {
       const { theme } = payload;
       const bgColor = new Color.Color(theme.colors.gray.l0);
-      Object.values(state.pids).forEach((pid) => {
-        const { nodes, edges, props } = pid;
+      Object.values(state.schematics).forEach((schematic) => {
+        const { nodes, edges, props } = schematic;
         nodes.forEach((node) => {
           const nodeProps = props[node.key];
           if ("color" in nodeProps) {
@@ -450,10 +461,10 @@ export const { actions, reducer } = createSlice({
 });
 
 const clearOtherSelections = (state: SliceState, layoutKey: string): void => {
-  Object.keys(state.pids).forEach((key) => {
+  Object.keys(state.schematics).forEach((key) => {
     // If any of the nodes or edges in other Diagram slices are selected, deselect them.
     if (key === layoutKey) return;
-    clearSelections(state.pids[key]);
+    clearSelections(state.schematics[key]);
   });
 };
 
@@ -490,15 +501,15 @@ export const {
 export type Action = ReturnType<(typeof actions)[keyof typeof actions]>;
 export type Payload = Action["payload"];
 
-export type LayoutType = "pid";
-export const LAYOUT_TYPE = "pid";
+export type LayoutType = "schematic";
+export const LAYOUT_TYPE = "schematic";
 
 export const create =
   (
     initial: Partial<State> & Omit<Partial<Layout.LayoutState>, "type">,
   ): Layout.Creator =>
   ({ dispatch }) => {
-    const { name = "PID", location = "mosaic", window, tab, ...rest } = initial;
+    const { name = "Schematic", location = "mosaic", window, tab, ...rest } = initial;
     const key = initial.key ?? uuidV4();
     dispatch(actions.create({ ...deep.copy(ZERO_STATE), key, ...rest }));
     return {

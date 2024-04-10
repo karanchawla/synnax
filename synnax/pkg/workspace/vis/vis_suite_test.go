@@ -26,7 +26,7 @@ import (
 	. "github.com/synnaxlabs/x/testutil"
 )
 
-func TestPid(t *testing.T) {
+func TestVis(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Vis Suite")
 }

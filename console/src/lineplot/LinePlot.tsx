@@ -70,11 +70,10 @@ const syncer: Syncer<
   if (ws == null) return;
   const data = select(s, key);
   const la = Layout.selectRequired(s, key);
-  if (!data.remoteCreated) {
-    store.dispatch(setRemoteCreated({ key }));
-  }
-  await client.workspaces.linePlot.create(ws, {
+  if (!data.remoteCreated) store.dispatch(setRemoteCreated({ key }));
+  await client.workspaces.vis.create(ws, {
     key,
+    type: "lineplot",
     name: la.name,
     data: data as unknown as UnknownRecord,
   });
@@ -358,7 +357,7 @@ export const LinePlot: Layout.Renderer = ({
   const client = Synnax.use();
   useAsyncEffect(async () => {
     if (client == null || linePlot != null) return;
-    const { data } = await client.workspaces.linePlot.retrieve(layoutKey);
+    const { data } = await client.workspaces.vis.retrieve(layoutKey);
     dispatch(internalCreate({ ...(data as unknown as State) }));
   }, [client, linePlot]);
   if (linePlot == null) return null;

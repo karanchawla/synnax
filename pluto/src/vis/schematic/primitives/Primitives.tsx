@@ -31,7 +31,7 @@ import { Input } from "@/input";
 import { Text } from "@/text";
 import { Theming } from "@/theming";
 
-import "@/vis/pid/primitives/Primitives.css";
+import "@/vis/schematic/primitives/Primitives.css";
 
 interface PathProps extends ComponentPropsWithoutRef<"path"> {}
 

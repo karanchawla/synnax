@@ -22,7 +22,7 @@ import {
   CommonNonToggleForm,
   ValueForm,
   ButtonForm,
-} from "@/vis/pid/Forms";
+} from "@/vis/schematic/Forms";
 import {
   type ThreeWayValveProps,
   type SymbolProps,
@@ -81,7 +81,7 @@ import {
   Switch,
   SwitchPreview,
   type SwitchProps,
-} from "@/vis/pid/Symbols";
+} from "@/vis/schematic/Symbols";
 
 export interface Spec<P extends object> {
   key: Variant;

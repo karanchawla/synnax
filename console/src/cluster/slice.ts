@@ -66,7 +66,7 @@ export const ZERO_STATE: SliceState = {
   activeCluster: null,
   dogs: {},
   localState: {
-    pid: 0,
+    schematic: 0,
     command: "stop",
     status: "stopped",
   },

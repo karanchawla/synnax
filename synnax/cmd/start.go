@@ -21,7 +21,6 @@ import (
 	"github.com/synnaxlabs/synnax/pkg/ranger"
 	"github.com/synnaxlabs/synnax/pkg/version"
 	"github.com/synnaxlabs/synnax/pkg/workspace"
-	"github.com/synnaxlabs/synnax/pkg/workspace/pid"
 	"github.com/synnaxlabs/synnax/pkg/workspace/vis"
 
 	"github.com/samber/lo"
@@ -163,11 +162,7 @@ func start(cmd *cobra.Command) {
 		if err != nil {
 			return err
 		}
-		pidSvc, err := pid.NewService(pid.Config{DB: gorpDB, Ontology: dist.Ontology})
-		if err != nil {
-			return err
-		}
-		VisualizationSvc, err := vis.NewService(vis.Config{DB: gorpDB, Ontology: dist.Ontology})
+		visSvc, err := vis.NewService(vis.Config{DB: gorpDB, Ontology: dist.Ontology})
 		if err != nil {
 			return err
 		}
@@ -199,8 +194,7 @@ func start(cmd *cobra.Command) {
 			Instrumentation: ins.Child("api"),
 			Authenticator:   authenticator,
 			Enforcer:        access.AllowAll{},
-			PID:             pidSvc,
-			Vis:             VisualizationSvc,
+			Vis:             visSvc,
 			Insecure:        config.Bool(insecure),
 			Channel:         dist.Channel,
 			Framer:          dist.Framer,

@@ -181,7 +181,7 @@ var file_telempb_telem_proto_goTypes = []interface{}{
 	(*TimeRange)(nil), // 0: telempb.TimeRange
 	(*Series)(nil),    // 1: telempb.Series
 }
-var file_telempb_telem_proto_depIdxs = []int32{
+var file_telempb_telem_proto_devisxs = []int32{
 	0, // 0: telempb.Series.time_range:type_name -> telempb.TimeRange
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
@@ -232,11 +232,11 @@ func file_telempb_telem_proto_init() {
 			NumServices:   0,
 		},
 		GoTypes:           file_telempb_telem_proto_goTypes,
-		DependencyIndexes: file_telempb_telem_proto_depIdxs,
+		DependencyIndexes: file_telempb_telem_proto_devisxs,
 		MessageInfos:      file_telempb_telem_proto_msgTypes,
 	}.Build()
 	File_telempb_telem_proto = out.File
 	file_telempb_telem_proto_rawDesc = nil
 	file_telempb_telem_proto_goTypes = nil
-	file_telempb_telem_proto_depIdxs = nil
+	file_telempb_telem_proto_devisxs = nil
 }

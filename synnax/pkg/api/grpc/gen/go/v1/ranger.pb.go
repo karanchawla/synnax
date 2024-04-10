@@ -1177,7 +1177,7 @@ var file_v1_ranger_proto_goTypes = []interface{}{
 	(*telempb.TimeRange)(nil),           // 23: telempb.TimeRange
 	(*emptypb.Empty)(nil),               // 24: google.protobuf.Empty
 }
-var file_v1_ranger_proto_depIdxs = []int32{
+var file_v1_ranger_proto_devisxs = []int32{
 	8,  // 0: api.v1.RangeRetrieveActiveResponse.range:type_name -> api.v1.Range
 	18, // 1: api.v1.RangeAliasSetRequest.aliases:type_name -> api.v1.RangeAliasSetRequest.AliasesEntry
 	19, // 2: api.v1.RangeAliasResolveResponse.aliases:type_name -> api.v1.RangeAliasResolveResponse.AliasesEntry
@@ -1455,11 +1455,11 @@ func file_v1_ranger_proto_init() {
 			NumServices:   13,
 		},
 		GoTypes:           file_v1_ranger_proto_goTypes,
-		DependencyIndexes: file_v1_ranger_proto_depIdxs,
+		DependencyIndexes: file_v1_ranger_proto_devisxs,
 		MessageInfos:      file_v1_ranger_proto_msgTypes,
 	}.Build()
 	File_v1_ranger_proto = out.File
 	file_v1_ranger_proto_rawDesc = nil
 	file_v1_ranger_proto_goTypes = nil
-	file_v1_ranger_proto_depIdxs = nil
+	file_v1_ranger_proto_devisxs = nil
 }

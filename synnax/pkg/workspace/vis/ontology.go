@@ -45,10 +45,10 @@ var _schema = &ontology.Schema{
 	},
 }
 
-func newResource(pid Vis) schema.Resource {
-	e := schema.NewResource(_schema, OntologyID(pid.Key), pid.Name)
-	schema.Set(e, "key", pid.Key.String())
-	schema.Set(e, "name", pid.Name)
+func newResource(vis Vis) schema.Resource {
+	e := schema.NewResource(_schema, OntologyID(vis.Key), vis.Name)
+	schema.Set(e, "key", vis.Key.String())
+	schema.Set(e, "name", vis.Name)
 	return e
 }
 
@@ -62,9 +62,9 @@ func (s *Service) Schema() *schema.Schema { return _schema }
 // RetrieveResource implements ontology.Service.
 func (s *Service) RetrieveResource(ctx context.Context, key string, tx gorp.Tx) (ontology.Resource, error) {
 	k := uuid.MustParse(key)
-	var pid Vis
-	err := s.NewRetrieve().WhereKeys(k).Entry(&pid).Exec(ctx, tx)
-	return newResource(pid), err
+	var vis Vis
+	err := s.NewRetrieve().WhereKeys(k).Entry(&vis).Exec(ctx, tx)
+	return newResource(vis), err
 }
 
 func translateChange(c change) schema.Change {

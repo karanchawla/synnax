@@ -15,10 +15,11 @@ import (
 )
 
 type Vis struct {
-	Key  uuid.UUID `json:"key" msgpack:"key"`
-	Type string    `json:"type" msgpack:"type"`
-	Name string    `json:"name" msgpack:"name"`
-	Data string    `json:"data" msgpack:"data"`
+	Key      uuid.UUID `json:"key" msgpack:"key"`
+	Type     string    `json:"type" msgpack:"type"`
+	Name     string    `json:"name" msgpack:"name"`
+	Snapshot bool      `json:"snapshot" msgpack:"snapshot"`
+	Data     string    `json:"data" msgpack:"data"`
 }
 
 var _ gorp.Entry[uuid.UUID] = Vis{}

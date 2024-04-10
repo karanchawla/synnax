@@ -16,12 +16,12 @@ import {
   type State,
   type StoreState,
   type ToolbarState,
-} from "@/pid/slice";
+} from "@/schematic/slice";
 
-export const selectSliceState = (state: StoreState): SliceState => state.pid;
+export const selectSliceState = (state: StoreState): SliceState => state.schematic;
 
 export const select = (state: StoreState, key: string): State =>
-  selectSliceState(state).pids[key];
+  selectSliceState(state).schematics[key];
 
 export const useSelect = (key: string): State =>
   useMemoSelect((state: StoreState) => select(state, key), [key]);
@@ -36,16 +36,16 @@ export const selectSelectedElementsProps = (
   state: StoreState,
   layoutKey: string,
 ): ElementInfo[] => {
-  const pid = select(state, layoutKey);
-  const nodes: ElementInfo[] = pid.nodes
+  const schematic = select(state, layoutKey);
+  const nodes: ElementInfo[] = schematic.nodes
     .filter((node) => node.selected)
     .map((node) => ({
       key: node.key,
       type: "node",
       node,
-      props: pid.props[node.key],
+      props: schematic.props[node.key],
     }));
-  const edges: ElementInfo[] = pid.edges
+  const edges: ElementInfo[] = schematic.edges
     .filter((edge) => edge.selected)
     .map((edge) => ({
       key: edge.key,
@@ -81,8 +81,8 @@ export const selectNodeProps = (
   layoutKey: string,
   key: string,
 ): NodeProps => {
-  const pid = select(state, layoutKey);
-  return pid.props[key];
+  const schematic = select(state, layoutKey);
+  return schematic.props[key];
 };
 
 export const useSelectNodeProps = (layoutKey: string, key: string): NodeProps =>

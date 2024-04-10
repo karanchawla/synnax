@@ -23,8 +23,8 @@ import { LayoutMain } from "@/layouts/LayoutMain";
 import { Mosaic } from "@/layouts/mosaic";
 import { LinePlot } from "@/lineplot";
 import { Ontology } from "@/ontology";
-import { PID } from "@/pid";
 import { Range } from "@/range";
+import { Schematic } from "@/schematic";
 import { SERVICES } from "@/services";
 import { store } from "@/store";
 import { Version } from "@/version";
@@ -47,7 +47,7 @@ const layoutRenderers: Record<string, Layout.Renderer> = {
   mosaic: Mosaic.Window,
   createWorkspace: Workspace.Create,
   [LinePlot.LAYOUT_TYPE]: LinePlot.LinePlot,
-  [PID.LAYOUT_TYPE]: PID.PID,
+  [Schematic.LAYOUT_TYPE]: Schematic.Schematic,
 };
 
 const PREVENT_DEFAULT_TRIGGERS: Triggers.Trigger[] = [

@@ -113,7 +113,7 @@ var file_ferrors_v1_ferrors_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_ferrors_v1_ferrors_proto_goTypes = []interface{}{
 	(*ErrorPayload)(nil), // 0: ferrors.v1.ErrorPayload
 }
-var file_ferrors_v1_ferrors_proto_depIdxs = []int32{
+var file_ferrors_v1_ferrors_proto_devisxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -151,11 +151,11 @@ func file_ferrors_v1_ferrors_proto_init() {
 			NumServices:   0,
 		},
 		GoTypes:           file_ferrors_v1_ferrors_proto_goTypes,
-		DependencyIndexes: file_ferrors_v1_ferrors_proto_depIdxs,
+		DependencyIndexes: file_ferrors_v1_ferrors_proto_devisxs,
 		MessageInfos:      file_ferrors_v1_ferrors_proto_msgTypes,
 	}.Build()
 	File_ferrors_v1_ferrors_proto = out.File
 	file_ferrors_v1_ferrors_proto_rawDesc = nil
 	file_ferrors_v1_ferrors_proto_goTypes = nil
-	file_ferrors_v1_ferrors_proto_depIdxs = nil
+	file_ferrors_v1_ferrors_proto_devisxs = nil
 }

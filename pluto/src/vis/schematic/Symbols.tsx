@@ -22,12 +22,12 @@ import { Theming } from "@/theming";
 import { Tooltip } from "@/tooltip";
 import { Button as CoreButton } from "@/vis/button";
 import { useInitialViewport } from "@/vis/diagram/aether/Diagram";
-import { Labeled, type LabelExtensionProps } from "@/vis/pid/Labeled";
-import { Primitives } from "@/vis/pid/primitives";
+import { Labeled, type LabelExtensionProps } from "@/vis/schematic/Labeled";
+import { Primitives } from "@/vis/schematic/primitives";
 import { Toggle } from "@/vis/toggle";
 import { Value as CoreValue } from "@/vis/value";
 
-import "@/vis/pid/Symbols.css";
+import "@/vis/schematic/Symbols.css";
 
 export interface ControlStateProps extends Omit<Align.SpaceProps, "direction"> {
   showChip?: boolean;

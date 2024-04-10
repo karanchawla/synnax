@@ -16,10 +16,14 @@ import { useDispatch } from "react-redux";
 
 import { ToolbarHeader, ToolbarTitle } from "@/components";
 import { Layout } from "@/layout";
-import { useSelect, useSelectControlStatus, useSelectToolbar } from "@/pid/selectors";
-import { type ToolbarTab, setActiveToolbarTab, setEditable } from "@/pid/slice";
-import { PropertiesControls } from "@/pid/toolbar/Properties";
-import { Symbols } from "@/pid/toolbar/Symbols";
+import {
+  useSelect,
+  useSelectControlStatus,
+  useSelectToolbar,
+} from "@/schematic/selectors";
+import { type ToolbarTab, setActiveToolbarTab, setEditable } from "@/schematic/slice";
+import { PropertiesControls } from "@/schematic/toolbar/Properties";
+import { Symbols } from "@/schematic/toolbar/Symbols";
 
 export interface ToolbarProps {
   layoutKey: string;
@@ -44,7 +48,7 @@ const NotEditableContent = ({ layoutKey }: NotEditableContentProps): ReactElemen
   return (
     <Align.Center direction="x" size="small">
       <Status.Text variant="disabled" hideIcon>
-        PID is not editable. To make changes,
+        Schematic is not editable. To make changes,
       </Status.Text>
       <Text.Link
         onClick={(e) => {
@@ -65,10 +69,10 @@ export const Toolbar = ({ layoutKey }: ToolbarProps): ReactElement | null => {
   const { name } = Layout.useSelectRequired(layoutKey);
   const dispatch = useDispatch();
   const toolbar = useSelectToolbar();
-  const pid = useSelect(layoutKey);
+  const schematic = useSelect(layoutKey);
   const content = useCallback(
     ({ tabKey }: Tabs.Tab): ReactElement => {
-      if (!pid.editable) return <NotEditableContent layoutKey={layoutKey} />;
+      if (!schematic.editable) return <NotEditableContent layoutKey={layoutKey} />;
       switch (tabKey) {
         case "symbols":
           return <Symbols layoutKey={layoutKey} />;
@@ -76,7 +80,7 @@ export const Toolbar = ({ layoutKey }: ToolbarProps): ReactElement | null => {
           return <PropertiesControls layoutKey={layoutKey} />;
       }
     },
-    [layoutKey, pid?.editable],
+    [layoutKey, schematic?.editable],
   );
 
   const handleTabSelect = useCallback(
@@ -86,7 +90,7 @@ export const Toolbar = ({ layoutKey }: ToolbarProps): ReactElement | null => {
     [dispatch],
   );
 
-  if (pid == null) return null;
+  if (schematic == null) return null;
 
   return (
     <Tabs.Provider
@@ -98,7 +102,7 @@ export const Toolbar = ({ layoutKey }: ToolbarProps): ReactElement | null => {
       }}
     >
       <ToolbarHeader>
-        <ToolbarTitle icon={<Icon.PID />}>{name}</ToolbarTitle>
+        <ToolbarTitle icon={<Icon.Schematic />}>{name}</ToolbarTitle>
         <Tabs.Selector style={{ borderBottom: "none" }} />
       </ToolbarHeader>
       <Tabs.Content />

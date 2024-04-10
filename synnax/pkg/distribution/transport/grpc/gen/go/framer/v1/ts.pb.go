@@ -679,7 +679,7 @@ var file_framer_v1_ts_proto_goTypes = []interface{}{
 	(*v1.ErrorPayload)(nil),   // 9: ferrors.v1.ErrorPayload
 	(*telempb.Series)(nil),    // 10: telem.Series
 }
-var file_framer_v1_ts_proto_depIdxs = []int32{
+var file_framer_v1_ts_proto_devisxs = []int32{
 	8,  // 0: ts.v1.IteratorRequest.bounds:type_name -> telem.TimeRange
 	4,  // 1: ts.v1.IteratorResponse.frame:type_name -> ts.v1.Frame
 	9,  // 2: ts.v1.IteratorResponse.error:type_name -> ferrors.v1.ErrorPayload
@@ -816,11 +816,11 @@ func file_framer_v1_ts_proto_init() {
 			NumServices:   3,
 		},
 		GoTypes:           file_framer_v1_ts_proto_goTypes,
-		DependencyIndexes: file_framer_v1_ts_proto_depIdxs,
+		DependencyIndexes: file_framer_v1_ts_proto_devisxs,
 		MessageInfos:      file_framer_v1_ts_proto_msgTypes,
 	}.Build()
 	File_framer_v1_ts_proto = out.File
 	file_framer_v1_ts_proto_rawDesc = nil
 	file_framer_v1_ts_proto_goTypes = nil
-	file_framer_v1_ts_proto_depIdxs = nil
+	file_framer_v1_ts_proto_devisxs = nil
 }

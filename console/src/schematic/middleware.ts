@@ -9,14 +9,14 @@
 
 import { Layout } from "@/layout";
 import { effectMiddleware, type MiddlewareEffect } from "@/middleware";
-import { selectSliceState } from "@/pid/selectors";
+import { selectSliceState } from "@/schematic/selectors";
 import {
   remove,
   type RemovePayload,
   type StoreState,
   fixThemeContrast,
   type FixThemeContrastPayload,
-} from "@/pid/slice";
+} from "@/schematic/slice";
 
 export const deleteEffect: MiddlewareEffect<
   Layout.StoreState & StoreState,
@@ -24,12 +24,12 @@ export const deleteEffect: MiddlewareEffect<
   RemovePayload
 > = ({ action, dispatch, getState }) => {
   const state = getState();
-  const pidSLice = selectSliceState(state);
+  const schematicSLice = selectSliceState(state);
   const layoutSlice = Layout.selectSliceState(state);
   // This is the case where the action does an explicit removal.
   const keys = "keys" in action.payload ? action.payload.keys : [];
   // We also just do a genera purpose garbage collection if necessary.
-  const toRemove = Object.keys(pidSLice.pids).filter(
+  const toRemove = Object.keys(schematicSLice.schematics).filter(
     (p) => keys.includes(p) || layoutSlice.layouts[p] == null,
   );
   if (toRemove.length > 0) dispatch(remove({ layoutKeys: toRemove }));

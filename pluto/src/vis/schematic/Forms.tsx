@@ -24,12 +24,12 @@ import { telem } from "@/telem/aether";
 import { control } from "@/telem/control/aether";
 import { Text } from "@/text";
 import { type Button as CoreButton } from "@/vis/button";
-import { type LabelExtensionProps } from "@/vis/pid/Labeled";
-import { SelectOrientation } from "@/vis/pid/SelectOrientation";
-import { type ControlStateProps } from "@/vis/pid/Symbols";
+import { type LabelExtensionProps } from "@/vis/schematic/Labeled";
+import { SelectOrientation } from "@/vis/schematic/SelectOrientation";
+import { type ControlStateProps } from "@/vis/schematic/Symbols";
 import { type Toggle } from "@/vis/toggle";
 
-import "@/vis/pid/Forms.css";
+import "@/vis/schematic/Forms.css";
 
 export interface SymbolFormProps {}
 

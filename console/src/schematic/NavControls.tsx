@@ -12,8 +12,8 @@ import { type ReactElement, useMemo } from "react";
 import { Viewport } from "@synnaxlabs/pluto";
 import { useDispatch } from "react-redux";
 
-import { useSelectViewportMode } from "@/pid/selectors";
-import { setViewportMode } from "@/pid/slice";
+import { useSelectViewportMode } from "@/schematic/selectors";
+import { setViewportMode } from "@/schematic/slice";
 
 export const NavControls = (): ReactElement => {
   const mode = useSelectViewportMode();

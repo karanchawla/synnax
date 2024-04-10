@@ -10,7 +10,15 @@
 import { type ReactElement } from "react";
 
 import { Icon } from "@synnaxlabs/media";
-import { Status, PID, Input, Align, Button, Diagram, Form } from "@synnaxlabs/pluto";
+import {
+  Status,
+  Schematic,
+  Input,
+  Align,
+  Button,
+  Diagram,
+  Form,
+} from "@synnaxlabs/pluto";
 import { Color } from "@synnaxlabs/pluto/color";
 import { box, deep, location, xy } from "@synnaxlabs/x";
 import { useDispatch } from "react-redux";
@@ -21,10 +29,10 @@ import {
   useSelectSelectedElementsProps,
   useSelectViewport,
   type NodeElementInfo,
-} from "@/pid/selectors";
-import { setElementProps, setNodePositions } from "@/pid/slice";
+} from "@/schematic/selectors";
+import { setElementProps, setNodePositions } from "@/schematic/slice";
 
-import "@/pid/toolbar/Properties.css";
+import "@/schematic/toolbar/Properties.css";
 
 export interface PropertiesProps {
   layoutKey: string;
@@ -43,7 +51,7 @@ export const PropertiesControls = ({ layoutKey }: PropertiesProps): ReactElement
   if (elements.length === 0)
     return (
       <Status.Text.Centered variant="disabled" hideIcon>
-        Select a PID element to configure its properties.
+        Select a Schematic element to configure its properties.
       </Status.Text.Centered>
     );
 
@@ -79,7 +87,7 @@ export const PropertiesControls = ({ layoutKey }: PropertiesProps): ReactElement
             );
             const match = el.className.match(/react-flow__handle-(\w+)/);
             if (match == null)
-              throw new Error(`[pid] - cannot find handle orientation`);
+              throw new Error(`[schematic] - cannot find handle orientation`);
             const orientation = location.construct(match[1]) as location.Outer;
             return new Diagram.HandleLayout(dist, orientation);
           });
@@ -92,7 +100,11 @@ export const PropertiesControls = ({ layoutKey }: PropertiesProps): ReactElement
       .filter((el) => el !== null) as Diagram.NodeLayout[];
 
     return (
-      <Align.Space className={CSS.B("pid-properties-pad")} align="start" direction="x">
+      <Align.Space
+        className={CSS.B("schematic-properties-pad")}
+        align="start"
+        direction="x"
+      >
         <Input.Item label="Selection Colors" align="start">
           <Align.Space direction="y">
             {Object.entries(groups).map(([hex, elements]) => {
@@ -170,7 +182,7 @@ const IndividualProperties = ({
   element: NodeElementInfo;
   onChange: (key: string, props: any) => void;
 }): ReactElement => {
-  const C = PID.SYMBOLS[selected.props.key as PID.Variant];
+  const C = Schematic.SYMBOLS[selected.props.key];
 
   const formMethods = Form.use({
     values: deep.copy(selected.props),
@@ -179,7 +191,7 @@ const IndividualProperties = ({
   });
 
   return (
-    <Align.Space className={CSS.B("pid-properties")} size="small">
+    <Align.Space className={CSS.B("schematic-properties")} size="small">
       <Form.Form {...formMethods}>
         <C.Form {...formMethods} key={selected.key} />
       </Form.Form>
@@ -195,7 +207,11 @@ interface EdgePropertiesProps {
 const EdgeProperties = ({ edge, onChange }: EdgePropertiesProps): ReactElement => {
   if (edge.type !== "edge") return <></>;
   return (
-    <Align.Space className={CSS.B("pid-properties-pad")} size="small" align="start">
+    <Align.Space
+      className={CSS.B("schematic-properties-pad")}
+      size="small"
+      align="start"
+    >
       <Input.Item label="Color" align="start">
         <Color.Swatch
           value={edge.edge.color ?? Color.ZERO}

@@ -163,6 +163,7 @@ type Transport struct {
 	VisDelete   freighter.UnaryServer[VisDeleteRequest, types.Nil]
 	VisRename   freighter.UnaryServer[VisRenameRequest, types.Nil]
 	VisSetData  freighter.UnaryServer[VisSetDataRequest, types.Nil]
+	VisCopy     freighter.UnaryServer[VisCopyRequest, VisCopyResponse]
 	// LABEL
 	LabelCreate   freighter.UnaryServer[LabelCreateRequest, LabelCreateResponse]
 	LabelRetrieve freighter.UnaryServer[LabelRetrieveRequest, LabelRetrieveResponse]
@@ -270,12 +271,13 @@ func (a *API) BindTo(t Transport) {
 		t.WorkspaceRename,
 		t.WorkspaceSetLayout,
 
-		// VIS
+		// Vis
 		t.VisCreate,
 		t.VisRename,
 		t.VisSetData,
 		t.VisRetrieve,
 		t.VisDelete,
+		t.VisCopy,
 
 		// LABEL
 		t.LabelCreate,
@@ -346,12 +348,13 @@ func (a *API) BindTo(t Transport) {
 	t.WorkspaceRename.BindHandler(a.Workspace.Rename)
 	t.WorkspaceSetLayout.BindHandler(a.Workspace.SetLayout)
 
-	// LINE PLOT
+	// VIS
 	t.VisCreate.BindHandler(a.Vis.Create)
 	t.VisRename.BindHandler(a.Vis.Rename)
 	t.VisSetData.BindHandler(a.Vis.SetData)
 	t.VisRetrieve.BindHandler(a.Vis.Retrieve)
 	t.VisDelete.BindHandler(a.Vis.Delete)
+	t.VisCopy.BindHandler(a.Vis.Copy)
 
 	// LABEL
 	t.LabelCreate.BindHandler(a.Label.Create)

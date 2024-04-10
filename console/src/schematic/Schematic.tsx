@@ -23,7 +23,7 @@ import {
   Synnax,
   useAsyncEffect,
   Diagram,
-  PID as Core,
+  Schematic as Core,
 } from "@synnaxlabs/pluto";
 import { Triggers } from "@synnaxlabs/pluto/triggers";
 import { type UnknownRecord, box } from "@synnaxlabs/x";
@@ -38,7 +38,7 @@ import {
   useSelectNodeProps,
   useSelectViewport,
   useSelectViewportMode,
-} from "@/pid/selectors";
+} from "@/schematic/selectors";
 import {
   toggleControl,
   setControlStatus,
@@ -55,7 +55,7 @@ import {
   type State,
   internalCreate,
   setRemoteCreated,
-} from "@/pid/slice";
+} from "@/schematic/slice";
 import { Workspace } from "@/workspace";
 
 interface SyncPayload {
@@ -78,17 +78,16 @@ const syncer: Syncer<
     key: undefined,
     snapshot: undefined,
   } as unknown as UnknownRecord;
-  if (!data.remoteCreated) {
-    store.dispatch(setRemoteCreated({ layoutKey }));
-    await client.workspaces.pid.create(ws, {
-      key: layoutKey,
-      name: la.name,
-      data: setData,
-    });
-  } else await client.workspaces.pid.setData(layoutKey, setData);
+  if (!data.remoteCreated) store.dispatch(setRemoteCreated({ layoutKey }));
+  await client.workspaces.vis.create(ws, {
+    key: layoutKey,
+    type: "schematic",
+    name: la.name,
+    data: setData,
+  });
 };
 
-export const HAUL_TYPE = "pid-element";
+export const HAUL_TYPE = "schematic-element";
 
 const SymbolRenderer = ({
   symbolKey,
@@ -137,7 +136,7 @@ const SymbolRenderer = ({
 export const Loaded: Layout.Renderer = ({ layoutKey }) => {
   const windowKey = useSelectWindowKey() as string;
   const { name } = Layout.useSelectRequired(layoutKey);
-  const pid = useSelect(layoutKey);
+  const schematic = useSelect(layoutKey);
 
   const dispatch = useSyncerDispatch<Layout.StoreState & StoreState, SyncPayload>(
     // @ts-expect-error - typescript can't identify property keys set as constants.
@@ -145,7 +144,7 @@ export const Loaded: Layout.Renderer = ({ layoutKey }) => {
     1000,
   );
   const theme = Theming.use();
-  const viewportRef = useSyncedRef(pid.viewport);
+  const viewportRef = useSyncedRef(schematic.viewport);
 
   const handleEdgesChange: Diagram.DiagramProps["onEdgesChange"] = useCallback(
     (edges) => {
@@ -235,11 +234,11 @@ export const Loaded: Layout.Renderer = ({ layoutKey }) => {
       });
       return valid;
     },
-    [pid.viewport, theme],
+    [schematic.viewport, theme],
   );
 
   const dropProps = Haul.useDrop({
-    type: "PID",
+    type: "Schematic",
     key: layoutKey,
     canDrop: Haul.canDropOfType(HAUL_TYPE),
     onDrop: handleDrop,
@@ -268,7 +267,7 @@ export const Loaded: Layout.Renderer = ({ layoutKey }) => {
   });
 
   const handleDoubleClick = useCallback(() => {
-    if (!pid.editable) return;
+    if (!schematic.editable) return;
     dispatch(
       Layout.setNavdrawerVisible({
         windowKey,
@@ -276,7 +275,7 @@ export const Loaded: Layout.Renderer = ({ layoutKey }) => {
         value: true,
       }) as PayloadAction<SyncPayload>,
     );
-  }, [windowKey, dispatch, pid.editable]);
+  }, [windowKey, dispatch, schematic.editable]);
 
   return (
     <div
@@ -287,18 +286,18 @@ export const Loaded: Layout.Renderer = ({ layoutKey }) => {
       <Control.Controller
         name={name}
         authority={1}
-        acquireTrigger={pid.controlAcquireTrigger}
+        acquireTrigger={schematic.controlAcquireTrigger}
         onStatusChange={handleControlStatusChange}
       >
         <Diagram.Diagram
           onViewportChange={handleViewportChange}
-          edges={pid.edges}
-          nodes={pid.nodes}
-          viewport={pid.viewport}
+          edges={schematic.edges}
+          nodes={schematic.nodes}
+          viewport={schematic.viewport}
           onEdgesChange={handleEdgesChange}
           onNodesChange={handleNodesChange}
           onEditableChange={handleEditableChange}
-          editable={pid.editable}
+          editable={schematic.editable}
           triggers={triggers}
           onDoubleClick={handleDoubleClick}
           {...dropProps}
@@ -306,19 +305,21 @@ export const Loaded: Layout.Renderer = ({ layoutKey }) => {
           <Diagram.NodeRenderer>{elRenderer}</Diagram.NodeRenderer>
           <Diagram.Background />
           <Diagram.Controls>
-            {!pid.snapshot && (
-              <Diagram.ToggleEditControl disabled={pid.control === "acquired"} />
+            {!schematic.snapshot && (
+              <Diagram.ToggleEditControl disabled={schematic.control === "acquired"} />
             )}
             <Diagram.FitViewControl />
-            {!pid.snapshot && (
+            {!schematic.snapshot && (
               <Button.ToggleIcon
-                value={pid.control === "acquired"}
+                value={schematic.control === "acquired"}
                 onChange={acquireControl}
                 tooltipLocation={{ x: "right", y: "center" }}
                 variant="outlined"
                 tooltip={
                   <Text.Text level="small">
-                    {pid.control === "acquired" ? "Release control" : "Acquire control"}
+                    {schematic.control === "acquired"
+                      ? "Release control"
+                      : "Acquire control"}
                   </Text.Text>
                 }
               >
@@ -333,15 +334,18 @@ export const Loaded: Layout.Renderer = ({ layoutKey }) => {
   );
 };
 
-export const PID: Layout.Renderer = ({ layoutKey, ...props }): ReactElement | null => {
-  const pid = useSelect(layoutKey);
+export const Schematic: Layout.Renderer = ({
+  layoutKey,
+  ...props
+}): ReactElement | null => {
+  const schematic = useSelect(layoutKey);
   const dispatch = useDispatch();
   const client = Synnax.use();
   useAsyncEffect(async () => {
-    if (client == null || pid != null) return;
-    const { data } = await client.workspaces.pid.retrieve(layoutKey);
+    if (client == null || schematic != null) return;
+    const { data } = await client.workspaces.vis.retrieve(layoutKey);
     dispatch(internalCreate({ key: layoutKey, ...(data as unknown as State) }));
-  }, [client, pid]);
-  if (pid == null) return null;
+  }, [client, schematic]);
+  if (schematic == null) return null;
   return <Loaded layoutKey={layoutKey} {...props} />;
 };

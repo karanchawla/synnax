@@ -19,15 +19,15 @@ describe("Vis", () => {
   describe("create", () => {
     test("create one", async () => {
       const ws = await client.workspaces.create({
-        name: "PID",
+        name: "Schematic",
         layout: { one: 1 },
       });
       const vis = await client.workspaces.vis.create(ws.key, {
-        name: "PID",
-        type: "pid",
+        name: "Schematic",
+        type: "schematic",
         data: { one: 1 },
       });
-      expect(vis.name).toEqual("PID");
+      expect(vis.name).toEqual("Schematic");
       expect(vis.key).not.toEqual(ZERO_UUID);
       expect(vis.data.one).toEqual(1);
     });
@@ -35,28 +35,28 @@ describe("Vis", () => {
   describe("rename", () => {
     test("rename one", async () => {
       const ws = await client.workspaces.create({
-        name: "PID",
+        name: "Schematic",
         layout: { one: 1 },
       });
       const linePlot = await client.workspaces.vis.create(ws.key, {
-        name: "PID",
-        type: "pid",
+        name: "Schematic",
+        type: "schematic",
         data: { one: 1 },
       });
-      await client.workspaces.vis.rename(linePlot.key, "PID2");
+      await client.workspaces.vis.rename(linePlot.key, "Schematic2");
       const res = await client.workspaces.vis.retrieve(linePlot.key);
-      expect(res.name).toEqual("PID2");
+      expect(res.name).toEqual("Schematic2");
     });
   });
   describe("setData", () => {
     test("set data", async () => {
       const ws = await client.workspaces.create({
-        name: "PID",
+        name: "Schematic",
         layout: { one: 1 },
       });
       const linePlot = await client.workspaces.vis.create(ws.key, {
-        name: "PID",
-        type: "pid",
+        name: "Schematic",
+        type: "schematic",
         data: { one: 1 },
       });
       await client.workspaces.vis.setData(linePlot.key, { two: 2 });
@@ -67,12 +67,12 @@ describe("Vis", () => {
   describe("delete", () => {
     test("delete one", async () => {
       const ws = await client.workspaces.create({
-        name: "PID",
+        name: "Schematic",
         layout: { one: 1 },
       });
       const linePlot = await client.workspaces.vis.create(ws.key, {
-        name: "PID",
-        type: "pid",
+        name: "Schematic",
+        type: "schematic",
         data: { one: 1 },
       });
       await client.workspaces.vis.delete(linePlot.key);

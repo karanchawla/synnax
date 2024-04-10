@@ -113,7 +113,7 @@ var file_v1_connectivity_proto_goTypes = []interface{}{
 	(*ConnectivityCheckResponse)(nil), // 0: api.v1.ConnectivityCheckResponse
 	(*emptypb.Empty)(nil),             // 1: google.protobuf.Empty
 }
-var file_v1_connectivity_proto_depIdxs = []int32{
+var file_v1_connectivity_proto_devisxs = []int32{
 	1, // 0: api.v1.ConnectivityService.Exec:input_type -> google.protobuf.Empty
 	0, // 1: api.v1.ConnectivityService.Exec:output_type -> api.v1.ConnectivityCheckResponse
 	1, // [1:2] is the sub-list for method output_type
@@ -153,11 +153,11 @@ func file_v1_connectivity_proto_init() {
 			NumServices:   1,
 		},
 		GoTypes:           file_v1_connectivity_proto_goTypes,
-		DependencyIndexes: file_v1_connectivity_proto_depIdxs,
+		DependencyIndexes: file_v1_connectivity_proto_devisxs,
 		MessageInfos:      file_v1_connectivity_proto_msgTypes,
 	}.Build()
 	File_v1_connectivity_proto = out.File
 	file_v1_connectivity_proto_rawDesc = nil
 	file_v1_connectivity_proto_goTypes = nil
-	file_v1_connectivity_proto_depIdxs = nil
+	file_v1_connectivity_proto_devisxs = nil
 }
