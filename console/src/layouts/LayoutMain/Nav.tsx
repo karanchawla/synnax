@@ -22,6 +22,7 @@ import { NAV_SIZES } from "@/layouts/LayoutMain/constants";
 import { LinePlot } from "@/lineplot";
 import { Palette } from "@/palette/Palette";
 import { type TriggerConfig } from "@/palette/types";
+import { Persist } from "@/persist";
 import { PID } from "@/pid";
 import { Range } from "@/range";
 import { SERVICES } from "@/services";
@@ -45,6 +46,7 @@ const COMMANDS = [
   ...Workspace.COMMANDS,
   ...Cluster.COMMANDS,
   ...Range.COMMANDS,
+  ...Persist.COMMANDS,
 ];
 
 const NavTopPalette = (): ReactElement => {

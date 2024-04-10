@@ -10,13 +10,14 @@
 import { Icon } from "@synnaxlabs/media";
 
 import { type Command } from "@/palette/Palette";
-import { editLayout } from "@/range/EditLayout";
+import { CLEAR_STATE } from "@/persist/state";
+import { type RootAction } from "@/store";
 
-export const defineCommand: Command = {
-  key: "define-range",
-  name: "Create a Range",
-  icon: <Icon.Range />,
-  onSelect: ({ placeLayout }) => placeLayout(editLayout()),
+export const clearStorageCommand: Command = {
+  key: "clear-storage",
+  name: "Clear Storage",
+  icon: <Icon.Close />,
+  onSelect: ({ store }) => store.dispatch(CLEAR_STATE as RootAction),
 };
 
-export const COMMANDS = [defineCommand];
+export const COMMANDS = [clearStorageCommand];
