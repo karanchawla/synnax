@@ -21,8 +21,8 @@ import (
 	"github.com/synnaxlabs/synnax/pkg/ranger"
 	"github.com/synnaxlabs/synnax/pkg/version"
 	"github.com/synnaxlabs/synnax/pkg/workspace"
-	"github.com/synnaxlabs/synnax/pkg/workspace/lineplot"
 	"github.com/synnaxlabs/synnax/pkg/workspace/pid"
+	"github.com/synnaxlabs/synnax/pkg/workspace/vis"
 
 	"github.com/samber/lo"
 	"github.com/synnaxlabs/synnax/pkg/security"
@@ -167,7 +167,7 @@ func start(cmd *cobra.Command) {
 		if err != nil {
 			return err
 		}
-		linePlotSvc, err := lineplot.NewService(lineplot.Config{DB: gorpDB, Ontology: dist.Ontology})
+		VisualizationSvc, err := vis.NewService(vis.Config{DB: gorpDB, Ontology: dist.Ontology})
 		if err != nil {
 			return err
 		}
@@ -200,7 +200,7 @@ func start(cmd *cobra.Command) {
 			Authenticator:   authenticator,
 			Enforcer:        access.AllowAll{},
 			PID:             pidSvc,
-			LinePlot:        linePlotSvc,
+			Visualization:   VisualizationSvc,
 			Insecure:        config.Bool(insecure),
 			Channel:         dist.Channel,
 			Framer:          dist.Framer,

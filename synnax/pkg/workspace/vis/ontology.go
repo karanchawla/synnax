@@ -7,7 +7,7 @@
 // License, use of this software will be governed by the Apache License, Version 2.0,
 // included in the file licenses/APL.txt.
 
-package lineplot
+package vis
 
 import (
 	"context"
@@ -20,7 +20,7 @@ import (
 	"github.com/synnaxlabs/x/observe"
 )
 
-const ontologyType ontology.Type = "lineplot"
+const ontologyType ontology.Type = "vis"
 
 func OntologyID(k uuid.UUID) ontology.ID {
 	return ontology.ID{Type: ontologyType, Key: k.String()}
@@ -45,7 +45,7 @@ var _schema = &ontology.Schema{
 	},
 }
 
-func newResource(pid LinePlot) schema.Resource {
+func newResource(pid Vis) schema.Resource {
 	e := schema.NewResource(_schema, OntologyID(pid.Key), pid.Name)
 	schema.Set(e, "key", pid.Key.String())
 	schema.Set(e, "name", pid.Name)
@@ -54,7 +54,7 @@ func newResource(pid LinePlot) schema.Resource {
 
 var _ ontology.Service = (*Service)(nil)
 
-type change = changex.Change[uuid.UUID, LinePlot]
+type change = changex.Change[uuid.UUID, Vis]
 
 // Schema implements ontology.Service.
 func (s *Service) Schema() *schema.Schema { return _schema }
@@ -62,7 +62,7 @@ func (s *Service) Schema() *schema.Schema { return _schema }
 // RetrieveResource implements ontology.Service.
 func (s *Service) RetrieveResource(ctx context.Context, key string, tx gorp.Tx) (ontology.Resource, error) {
 	k := uuid.MustParse(key)
-	var pid LinePlot
+	var pid Vis
 	err := s.NewRetrieve().WhereKeys(k).Entry(&pid).Exec(ctx, tx)
 	return newResource(pid), err
 }
@@ -77,16 +77,16 @@ func translateChange(c change) schema.Change {
 
 // OnChange implements ontology.Service.
 func (s *Service) OnChange(f func(ctx context.Context, nexter iter.Nexter[schema.Change])) observe.Disconnect {
-	handleChange := func(ctx context.Context, reader gorp.TxReader[uuid.UUID, LinePlot]) {
+	handleChange := func(ctx context.Context, reader gorp.TxReader[uuid.UUID, Vis]) {
 		f(ctx, iter.NexterTranslator[change, schema.Change]{Wrap: reader, Translate: translateChange})
 	}
-	return gorp.Observe[uuid.UUID, LinePlot](s.DB).OnChange(handleChange)
+	return gorp.Observe[uuid.UUID, Vis](s.DB).OnChange(handleChange)
 }
 
 // OpenNexter implements ontology.Service.
 func (s *Service) OpenNexter() (iter.NexterCloser[schema.Resource], error) {
-	n, err := gorp.WrapReader[uuid.UUID, LinePlot](s.DB).OpenNexter()
-	return iter.NexterCloserTranslator[LinePlot, schema.Resource]{
+	n, err := gorp.WrapReader[uuid.UUID, Vis](s.DB).OpenNexter()
+	return iter.NexterCloserTranslator[Vis, schema.Resource]{
 		Wrap:      n,
 		Translate: newResource,
 	}, err

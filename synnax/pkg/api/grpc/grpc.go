@@ -60,11 +60,11 @@ func New() (a api.Transport, transports []fgrpc.BindableTransport) {
 	a.PIDCopy = fnoop.UnaryServer[api.PIDCopyRequest, api.PIDCopyResponse]{}
 
 	// LINE PLOT
-	a.LinePlotCreate = fnoop.UnaryServer[api.LinePlotCreateRequest, api.LinePlotCreateResponse]{}
-	a.LinePlotRetrieve = fnoop.UnaryServer[api.LinePlotRetrieveRequest, api.LinePlotRetrieveResponse]{}
-	a.LinePlotDelete = fnoop.UnaryServer[api.LinePlotDeleteRequest, types.Nil]{}
-	a.LinePlotRename = fnoop.UnaryServer[api.LinePlotRenameRequest, types.Nil]{}
-	a.LinePlotSetData = fnoop.UnaryServer[api.LinePlotSetDataRequest, types.Nil]{}
+	a.VisualizationCreate = fnoop.UnaryServer[api.VisualizationCreateRequest, api.VisualizationCreateResponse]{}
+	a.VisualizationRetrieve = fnoop.UnaryServer[api.VisualizationRetrieveRequest, api.VisualizationRetrieveResponse]{}
+	a.VisualizationDelete = fnoop.UnaryServer[api.VisualizationDeleteRequest, types.Nil]{}
+	a.VisualizationRename = fnoop.UnaryServer[api.VisualizationRenameRequest, types.Nil]{}
+	a.VisualizationSetData = fnoop.UnaryServer[api.VisualizationSetDataRequest, types.Nil]{}
 
 	// LABEL
 	a.LabelCreate = fnoop.UnaryServer[api.LabelCreateRequest, api.LabelCreateResponse]{}

@@ -7,7 +7,7 @@
 // License, use of this software will be governed by the Apache License, Version 2.0,
 // included in the file licenses/APL.txt.
 
-package lineplot
+package vis
 
 import (
 	"context"
@@ -17,7 +17,7 @@ import (
 
 type Retrieve struct {
 	baseTX gorp.Tx
-	gorp   gorp.Retrieve[uuid.UUID, LinePlot]
+	gorp   gorp.Retrieve[uuid.UUID, Vis]
 }
 
 func (r Retrieve) WhereKeys(keys ...uuid.UUID) Retrieve {
@@ -25,12 +25,12 @@ func (r Retrieve) WhereKeys(keys ...uuid.UUID) Retrieve {
 	return r
 }
 
-func (r Retrieve) Entry(plot *LinePlot) Retrieve {
+func (r Retrieve) Entry(plot *Vis) Retrieve {
 	r.gorp = r.gorp.Entry(plot)
 	return r
 }
 
-func (r Retrieve) Entries(plots *[]LinePlot) Retrieve {
+func (r Retrieve) Entries(plots *[]Vis) Retrieve {
 	r.gorp = r.gorp.Entries(plots)
 	return r
 }

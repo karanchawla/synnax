@@ -7,7 +7,7 @@
 // License, use of this software will be governed by the Apache License, Version 2.0,
 // included in the file licenses/APL.txt.
 
-package lineplot
+package vis
 
 import (
 	"context"
@@ -25,12 +25,12 @@ type Writer struct {
 func (w Writer) Create(
 	ctx context.Context,
 	ws uuid.UUID,
-	p *LinePlot,
+	p *Vis,
 ) (err error) {
 	if p.Key == uuid.Nil {
 		p.Key = uuid.New()
 	}
-	if err = gorp.NewCreate[uuid.UUID, LinePlot]().Entry(p).Exec(ctx, w.tx); err != nil {
+	if err = gorp.NewCreate[uuid.UUID, Vis]().Entry(p).Exec(ctx, w.tx); err != nil {
 		return
 	}
 	otgID := OntologyID(p.Key)
@@ -53,7 +53,7 @@ func (w Writer) Rename(
 	key uuid.UUID,
 	name string,
 ) error {
-	return gorp.NewUpdate[uuid.UUID, LinePlot]().WhereKeys(key).Change(func(p LinePlot) LinePlot {
+	return gorp.NewUpdate[uuid.UUID, Vis]().WhereKeys(key).Change(func(p Vis) Vis {
 		p.Name = name
 		return p
 	}).Exec(ctx, w.tx)
@@ -64,7 +64,7 @@ func (w Writer) SetData(
 	key uuid.UUID,
 	data string,
 ) error {
-	return gorp.NewUpdate[uuid.UUID, LinePlot]().WhereKeys(key).Change(func(p LinePlot) LinePlot {
+	return gorp.NewUpdate[uuid.UUID, Vis]().WhereKeys(key).Change(func(p Vis) Vis {
 		p.Data = data
 		return p
 	}).Exec(ctx, w.tx)
@@ -74,7 +74,7 @@ func (w Writer) Delete(
 	ctx context.Context,
 	keys ...uuid.UUID,
 ) error {
-	err := gorp.NewDelete[uuid.UUID, LinePlot]().WhereKeys(keys...).Exec(ctx, w.tx)
+	err := gorp.NewDelete[uuid.UUID, Vis]().WhereKeys(keys...).Exec(ctx, w.tx)
 	if err != nil {
 		return err
 	}

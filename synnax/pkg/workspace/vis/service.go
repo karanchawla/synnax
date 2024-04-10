@@ -7,7 +7,7 @@
 // License, use of this software will be governed by the Apache License, Version 2.0,
 // included in the file licenses/APL.txt.
 
-package lineplot
+package vis
 
 import (
 	"github.com/google/uuid"
@@ -37,7 +37,7 @@ func (c Config) Override(other Config) Config {
 
 // Validate implements config.Properties.
 func (c Config) Validate() error {
-	v := validate.New("lineplot")
+	v := validate.New("Vis")
 	validate.NotNil(v, "DB", c.DB)
 	validate.NotNil(v, "Ontology", c.Ontology)
 	return v.Error()
@@ -65,7 +65,7 @@ func (s *Service) NewWriter(tx gorp.Tx) Writer {
 
 func (s *Service) NewRetrieve() Retrieve {
 	return Retrieve{
-		gorp:   gorp.NewRetrieve[uuid.UUID, LinePlot](),
+		gorp:   gorp.NewRetrieve[uuid.UUID, Vis](),
 		baseTX: s.DB,
 	}
 }

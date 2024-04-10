@@ -33,8 +33,7 @@ import (
 	"github.com/synnaxlabs/synnax/pkg/storage"
 	"github.com/synnaxlabs/synnax/pkg/user"
 	"github.com/synnaxlabs/synnax/pkg/workspace"
-	"github.com/synnaxlabs/synnax/pkg/workspace/lineplot"
-	"github.com/synnaxlabs/synnax/pkg/workspace/pid"
+	"github.com/synnaxlabs/synnax/pkg/workspace/vis"
 	"github.com/synnaxlabs/x/config"
 	"github.com/synnaxlabs/x/override"
 	"github.com/synnaxlabs/x/validate"
@@ -53,8 +52,7 @@ type Config struct {
 	Storage       *storage.Storage
 	User          *user.Service
 	Workspace     *workspace.Service
-	PID           *pid.Service
-	LinePlot      *lineplot.Service
+	Visualization *vis.Service
 	Token         *token.Service
 	Label         *label.Service
 	Hardware      *hardware.Service
@@ -84,8 +82,7 @@ func (c Config) Validate() error {
 	validate.NotNil(v, "enforcer", c.Enforcer)
 	validate.NotNil(v, "cluster", c.Cluster)
 	validate.NotNil(v, "group", c.Group)
-	validate.NotNil(v, "pid", c.PID)
-	validate.NotNil(v, "lineplot", c.LinePlot)
+	validate.NotNil(v, "Vis", c.Visualization)
 	validate.NotNil(v, "hardware", c.Hardware)
 	validate.NotNil(v, "insecure", c.Insecure)
 	validate.NotNil(v, "label", c.Label)
@@ -109,8 +106,7 @@ func (c Config) Override(other Config) Config {
 	c.Insecure = override.Nil(c.Insecure, other.Insecure)
 	c.Group = override.Nil(c.Group, other.Group)
 	c.Insecure = override.Nil(c.Insecure, other.Insecure)
-	c.PID = override.Nil(c.PID, other.PID)
-	c.LinePlot = override.Nil(c.LinePlot, other.LinePlot)
+	c.Visualization = override.Nil(c.Visualization, other.Visualization)
 	c.Label = override.Nil(c.Label, other.Label)
 	c.Hardware = override.Nil(c.Hardware, other.Hardware)
 	return c
@@ -161,19 +157,12 @@ type Transport struct {
 	WorkspaceDelete    freighter.UnaryServer[WorkspaceDeleteRequest, types.Nil]
 	WorkspaceRename    freighter.UnaryServer[WorkspaceRenameRequest, types.Nil]
 	WorkspaceSetLayout freighter.UnaryServer[WorkspaceSetLayoutRequest, types.Nil]
-	// PID
-	PIDCreate   freighter.UnaryServer[PIDCreateRequest, PIDCreateResponse]
-	PIDRetrieve freighter.UnaryServer[PIDRetrieveRequest, PIDRetrieveResponse]
-	PIDDelete   freighter.UnaryServer[PIDDeleteRequest, types.Nil]
-	PIDRename   freighter.UnaryServer[PIDRenameRequest, types.Nil]
-	PIDSetData  freighter.UnaryServer[PIDSetDataRequest, types.Nil]
-	PIDCopy     freighter.UnaryServer[PIDCopyRequest, PIDCopyResponse]
 	// LINE PLOT
-	LinePlotCreate   freighter.UnaryServer[LinePlotCreateRequest, LinePlotCreateResponse]
-	LinePlotRetrieve freighter.UnaryServer[LinePlotRetrieveRequest, LinePlotRetrieveResponse]
-	LinePlotDelete   freighter.UnaryServer[LinePlotDeleteRequest, types.Nil]
-	LinePlotRename   freighter.UnaryServer[LinePlotRenameRequest, types.Nil]
-	LinePlotSetData  freighter.UnaryServer[LinePlotSetDataRequest, types.Nil]
+	VisualizationCreate   freighter.UnaryServer[VisualizationCreateRequest, VisualizationCreateResponse]
+	VisualizationRetrieve freighter.UnaryServer[VisualizationRetrieveRequest, VisualizationRetrieveResponse]
+	VisualizationDelete   freighter.UnaryServer[VisualizationDeleteRequest, types.Nil]
+	VisualizationRename   freighter.UnaryServer[VisualizationRenameRequest, types.Nil]
+	VisualizationSetData  freighter.UnaryServer[VisualizationSetDataRequest, types.Nil]
 	// LABEL
 	LabelCreate   freighter.UnaryServer[LabelCreateRequest, LabelCreateResponse]
 	LabelRetrieve freighter.UnaryServer[LabelRetrieveRequest, LabelRetrieveResponse]
@@ -195,19 +184,18 @@ type Transport struct {
 // API wraps all implemented API services into a single container. Protocol-specific
 // API implementations should use this struct during instantiation.
 type API struct {
-	provider     Provider
-	config       Config
-	Auth         *AuthService
-	Telem        *FrameService
-	Channel      *ChannelService
-	Connectivity *ConnectivityService
-	Ontology     *OntologyService
-	Range        *RangeService
-	Workspace    *WorkspaceService
-	PID          *PIDService
-	LinePlot     *LinePlotService
-	Label        *LabelService
-	Hardware     *HardwareService
+	provider      Provider
+	config        Config
+	Auth          *AuthService
+	Telem         *FrameService
+	Channel       *ChannelService
+	Connectivity  *ConnectivityService
+	Ontology      *OntologyService
+	Range         *RangeService
+	Workspace     *WorkspaceService
+	Visualization *VisualizationService
+	Label         *LabelService
+	Hardware      *HardwareService
 }
 
 // BindTo binds the API to the provided Transport implementation.
@@ -282,20 +270,12 @@ func (a *API) BindTo(t Transport) {
 		t.WorkspaceRename,
 		t.WorkspaceSetLayout,
 
-		// PID
-		t.PIDCreate,
-		t.PIDRetrieve,
-		t.PIDDelete,
-		t.PIDRename,
-		t.PIDSetData,
-		t.PIDCopy,
-
-		// LINE PLOT
-		t.LinePlotCreate,
-		t.LinePlotRename,
-		t.LinePlotSetData,
-		t.LinePlotRetrieve,
-		t.LinePlotDelete,
+		// VISUALIZATION
+		t.VisualizationCreate,
+		t.VisualizationRename,
+		t.VisualizationSetData,
+		t.VisualizationRetrieve,
+		t.VisualizationDelete,
 
 		// LABEL
 		t.LabelCreate,
@@ -366,20 +346,12 @@ func (a *API) BindTo(t Transport) {
 	t.WorkspaceRename.BindHandler(a.Workspace.Rename)
 	t.WorkspaceSetLayout.BindHandler(a.Workspace.SetLayout)
 
-	// PID
-	t.PIDCreate.BindHandler(a.PID.Create)
-	t.PIDRetrieve.BindHandler(a.PID.Retrieve)
-	t.PIDDelete.BindHandler(a.PID.Delete)
-	t.PIDRename.BindHandler(a.PID.Rename)
-	t.PIDSetData.BindHandler(a.PID.SetData)
-	t.PIDCopy.BindHandler(a.PID.Copy)
-
 	// LINE PLOT
-	t.LinePlotCreate.BindHandler(a.LinePlot.Create)
-	t.LinePlotRename.BindHandler(a.LinePlot.Rename)
-	t.LinePlotSetData.BindHandler(a.LinePlot.SetData)
-	t.LinePlotRetrieve.BindHandler(a.LinePlot.Retrieve)
-	t.LinePlotDelete.BindHandler(a.LinePlot.Delete)
+	t.VisualizationCreate.BindHandler(a.Visualization.Create)
+	t.VisualizationRename.BindHandler(a.Visualization.Rename)
+	t.VisualizationSetData.BindHandler(a.Visualization.SetData)
+	t.VisualizationRetrieve.BindHandler(a.Visualization.Retrieve)
+	t.VisualizationDelete.BindHandler(a.Visualization.Delete)
 
 	// LABEL
 	t.LabelCreate.BindHandler(a.Label.Create)
@@ -415,8 +387,7 @@ func New(configs ...Config) (API, error) {
 	api.Ontology = NewOntologyService(api.provider)
 	api.Range = NewRangeService(api.provider)
 	api.Workspace = NewWorkspaceService(api.provider)
-	api.PID = NewPIDService(api.provider)
-	api.LinePlot = NewLinePlotService(api.provider)
+	api.Visualization = NewVisualizationService(api.provider)
 	api.Label = NewLabelService(api.provider)
 	api.Hardware = NewHardwareService(api.provider)
 	return api, nil
