@@ -77,11 +77,11 @@ func New(router *fhttp.Router) (t api.Transport) {
 	t.PIDCopy = fhttp.UnaryServer[api.PIDCopyRequest, api.PIDCopyResponse](router, "/api/v1/workspace/pid/copy")
 
 	// LINE PLOT
-	t.VisualizationCreate = fhttp.UnaryServer[api.VisualizationCreateRequest, api.VisualizationCreateResponse](router, "/api/v1/workspace/Visualization/create")
-	t.VisualizationRetrieve = fhttp.UnaryServer[api.VisualizationRetrieveRequest, api.VisualizationRetrieveResponse](router, "/api/v1/workspace/Visualization/retrieve")
-	t.VisualizationDelete = fhttp.UnaryServer[api.VisualizationDeleteRequest, types.Nil](router, "/api/v1/workspace/Visualization/delete")
-	t.VisualizationRename = fhttp.UnaryServer[api.VisualizationRenameRequest, types.Nil](router, "/api/v1/workspace/Visualization/rename")
-	t.VisualizationSetData = fhttp.UnaryServer[api.VisualizationSetDataRequest, types.Nil](router, "/api/v1/workspace/Visualization/set-data")
+	t.VisualizationCreate = fhttp.UnaryServer[api.VisualizationCreateRequest, api.VisualizationCreateResponse](router, "/api/v1/workspace/Vis/create")
+	t.VisualizationRetrieve = fhttp.UnaryServer[api.VisualizationRetrieveRequest, api.VisualizationRetrieveResponse](router, "/api/v1/workspace/Vis/retrieve")
+	t.VisualizationDelete = fhttp.UnaryServer[api.VisualizationDeleteRequest, types.Nil](router, "/api/v1/workspace/Vis/delete")
+	t.VisualizationRename = fhttp.UnaryServer[api.VisualizationRenameRequest, types.Nil](router, "/api/v1/workspace/Vis/rename")
+	t.VisualizationSetData = fhttp.UnaryServer[api.VisualizationSetDataRequest, types.Nil](router, "/api/v1/workspace/Vis/set-data")
 
 	// LABEL
 	t.LabelCreate = fhttp.UnaryServer[api.LabelCreateRequest, api.LabelCreateResponse](router, "/api/v1/label/create")

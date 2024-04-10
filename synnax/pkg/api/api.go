@@ -52,7 +52,7 @@ type Config struct {
 	Storage       *storage.Storage
 	User          *user.Service
 	Workspace     *workspace.Service
-	Visualization *vis.Service
+	Vis           *vis.Service
 	Token         *token.Service
 	Label         *label.Service
 	Hardware      *hardware.Service
@@ -82,7 +82,7 @@ func (c Config) Validate() error {
 	validate.NotNil(v, "enforcer", c.Enforcer)
 	validate.NotNil(v, "cluster", c.Cluster)
 	validate.NotNil(v, "group", c.Group)
-	validate.NotNil(v, "Vis", c.Visualization)
+	validate.NotNil(v, "Vis", c.Vis)
 	validate.NotNil(v, "hardware", c.Hardware)
 	validate.NotNil(v, "insecure", c.Insecure)
 	validate.NotNil(v, "label", c.Label)
@@ -106,7 +106,7 @@ func (c Config) Override(other Config) Config {
 	c.Insecure = override.Nil(c.Insecure, other.Insecure)
 	c.Group = override.Nil(c.Group, other.Group)
 	c.Insecure = override.Nil(c.Insecure, other.Insecure)
-	c.Visualization = override.Nil(c.Visualization, other.Visualization)
+	c.Vis = override.Nil(c.Vis, other.Vis)
 	c.Label = override.Nil(c.Label, other.Label)
 	c.Hardware = override.Nil(c.Hardware, other.Hardware)
 	return c
@@ -158,11 +158,11 @@ type Transport struct {
 	WorkspaceRename    freighter.UnaryServer[WorkspaceRenameRequest, types.Nil]
 	WorkspaceSetLayout freighter.UnaryServer[WorkspaceSetLayoutRequest, types.Nil]
 	// LINE PLOT
-	VisualizationCreate   freighter.UnaryServer[VisualizationCreateRequest, VisualizationCreateResponse]
-	VisualizationRetrieve freighter.UnaryServer[VisualizationRetrieveRequest, VisualizationRetrieveResponse]
-	VisualizationDelete   freighter.UnaryServer[VisualizationDeleteRequest, types.Nil]
-	VisualizationRename   freighter.UnaryServer[VisualizationRenameRequest, types.Nil]
-	VisualizationSetData  freighter.UnaryServer[VisualizationSetDataRequest, types.Nil]
+	VisCreate   freighter.UnaryServer[VisCreateRequest, VisCreateResponse]
+	VisRetrieve freighter.UnaryServer[VisRetrieveRequest, VisRetrieveResponse]
+	VisDelete   freighter.UnaryServer[VisDeleteRequest, types.Nil]
+	VisRename   freighter.UnaryServer[VisRenameRequest, types.Nil]
+	VisSetData  freighter.UnaryServer[VisSetDataRequest, types.Nil]
 	// LABEL
 	LabelCreate   freighter.UnaryServer[LabelCreateRequest, LabelCreateResponse]
 	LabelRetrieve freighter.UnaryServer[LabelRetrieveRequest, LabelRetrieveResponse]
@@ -184,18 +184,18 @@ type Transport struct {
 // API wraps all implemented API services into a single container. Protocol-specific
 // API implementations should use this struct during instantiation.
 type API struct {
-	provider      Provider
-	config        Config
-	Auth          *AuthService
-	Telem         *FrameService
-	Channel       *ChannelService
-	Connectivity  *ConnectivityService
-	Ontology      *OntologyService
-	Range         *RangeService
-	Workspace     *WorkspaceService
-	Visualization *VisualizationService
-	Label         *LabelService
-	Hardware      *HardwareService
+	provider     Provider
+	config       Config
+	Auth         *AuthService
+	Telem        *FrameService
+	Channel      *ChannelService
+	Connectivity *ConnectivityService
+	Ontology     *OntologyService
+	Range        *RangeService
+	Workspace    *WorkspaceService
+	Vis          *VisService
+	Label        *LabelService
+	Hardware     *HardwareService
 }
 
 // BindTo binds the API to the provided Transport implementation.
@@ -270,12 +270,12 @@ func (a *API) BindTo(t Transport) {
 		t.WorkspaceRename,
 		t.WorkspaceSetLayout,
 
-		// VISUALIZATION
-		t.VisualizationCreate,
-		t.VisualizationRename,
-		t.VisualizationSetData,
-		t.VisualizationRetrieve,
-		t.VisualizationDelete,
+		// VIS
+		t.VisCreate,
+		t.VisRename,
+		t.VisSetData,
+		t.VisRetrieve,
+		t.VisDelete,
 
 		// LABEL
 		t.LabelCreate,
@@ -347,11 +347,11 @@ func (a *API) BindTo(t Transport) {
 	t.WorkspaceSetLayout.BindHandler(a.Workspace.SetLayout)
 
 	// LINE PLOT
-	t.VisualizationCreate.BindHandler(a.Visualization.Create)
-	t.VisualizationRename.BindHandler(a.Visualization.Rename)
-	t.VisualizationSetData.BindHandler(a.Visualization.SetData)
-	t.VisualizationRetrieve.BindHandler(a.Visualization.Retrieve)
-	t.VisualizationDelete.BindHandler(a.Visualization.Delete)
+	t.VisCreate.BindHandler(a.Vis.Create)
+	t.VisRename.BindHandler(a.Vis.Rename)
+	t.VisSetData.BindHandler(a.Vis.SetData)
+	t.VisRetrieve.BindHandler(a.Vis.Retrieve)
+	t.VisDelete.BindHandler(a.Vis.Delete)
 
 	// LABEL
 	t.LabelCreate.BindHandler(a.Label.Create)
@@ -387,7 +387,7 @@ func New(configs ...Config) (API, error) {
 	api.Ontology = NewOntologyService(api.provider)
 	api.Range = NewRangeService(api.provider)
 	api.Workspace = NewWorkspaceService(api.provider)
-	api.Visualization = NewVisualizationService(api.provider)
+	api.Vis = NewVisService(api.provider)
 	api.Label = NewLabelService(api.provider)
 	api.Hardware = NewHardwareService(api.provider)
 	return api, nil

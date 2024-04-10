@@ -123,81 +123,81 @@ func (s *WorkspaceService) Delete(ctx context.Context, req WorkspaceDeleteReques
 	})
 }
 
-type VisualizationService struct {
+type VisService struct {
 	dbProvider
 	internal *vis.Service
 }
 
-func NewVisualizationService(p Provider) *VisualizationService {
-	return &VisualizationService{
+func NewVisService(p Provider) *VisService {
+	return &VisService{
 		dbProvider: p.db,
-		internal:   p.Config.Visualization,
+		internal:   p.Config.Vis,
 	}
 }
 
-type VisualizationCreateRequest struct {
-	Workspace      uuid.UUID `json:"workspace" msgpack:"workspace"`
-	Visualizations []vis.Vis `json:"line_plots" msgpack:"line_plots"`
+type VisCreateRequest struct {
+	Workspace uuid.UUID `json:"workspace" msgpack:"workspace"`
+	Viss      []vis.Vis `json:"line_plots" msgpack:"line_plots"`
 }
 
-type VisualizationCreateResponse struct {
-	Visualizations []vis.Vis `json:"visualizations" msgpack:"visualizations"`
+type VisCreateResponse struct {
+	Viss []vis.Vis `json:"viss" msgpack:"viss"`
 }
 
-func (s *VisualizationService) Create(ctx context.Context, req VisualizationCreateRequest) (res VisualizationCreateResponse, err error) {
+func (s *VisService) Create(ctx context.Context, req VisCreateRequest) (res VisCreateResponse, err error) {
 	return res, s.WithTx(ctx, func(tx gorp.Tx) error {
-		for _, lp := range req.Visualizations {
+		for _, lp := range req.Viss {
 			err := s.internal.NewWriter(tx).Create(ctx, req.Workspace, &lp)
 			if err != nil {
 				return err
 			}
-			res.Visualizations = append(res.Visualizations, lp)
+			res.Viss = append(res.Viss, lp)
 		}
 		return err
 	})
 }
 
-type VisualizationRenameRequest struct {
+type VisRenameRequest struct {
 	Key  uuid.UUID `json:"key" msgpack:"key"`
 	Name string    `json:"name" msgpack:"name"`
 }
 
-func (s *VisualizationService) Rename(ctx context.Context, req VisualizationRenameRequest) (res types.Nil, err error) {
+func (s *VisService) Rename(ctx context.Context, req VisRenameRequest) (res types.Nil, err error) {
 	return res, s.WithTx(ctx, func(tx gorp.Tx) error {
 		return s.internal.NewWriter(tx).Rename(ctx, req.Key, req.Name)
 	})
 }
 
-type VisualizationSetDataRequest struct {
+type VisSetDataRequest struct {
 	Key  uuid.UUID `json:"key" msgpack:"key"`
 	Data string    `json:"data" msgpack:"data"`
 }
 
-func (s *VisualizationService) SetData(ctx context.Context, req VisualizationSetDataRequest) (res types.Nil, err error) {
+func (s *VisService) SetData(ctx context.Context, req VisSetDataRequest) (res types.Nil, err error) {
 	return res, s.WithTx(ctx, func(tx gorp.Tx) error {
 		return s.internal.NewWriter(tx).SetData(ctx, req.Key, req.Data)
 	})
 }
 
-type VisualizationRetrieveRequest struct {
+type VisRetrieveRequest struct {
 	Keys []uuid.UUID `json:"keys" msgpack:"keys"`
 }
 
-type VisualizationRetrieveResponse struct {
-	Visualizations []vis.Vis `json:"line_plots" msgpack:"line_plots"`
+type VisRetrieveResponse struct {
+	Vis []vis.Vis `json:"vis" msgpack:"vis"`
 }
 
-func (s *VisualizationService) Retrieve(ctx context.Context, req VisualizationRetrieveRequest) (res VisualizationRetrieveResponse, err error) {
+func (s *VisService) Retrieve(ctx context.Context, req VisRetrieveRequest) (res VisRetrieveResponse, err error) {
 	err = s.internal.NewRetrieve().
-		WhereKeys(req.Keys...).Entries(&res.Visualizations).Exec(ctx, nil)
+		WhereKeys(req.Keys...).Entries(&res.Vis).Exec(ctx, nil)
 	return res, err
 }
 
-type VisualizationDeleteRequest struct {
+type VisDeleteRequest struct {
 	Keys []uuid.UUID `json:"keys" msgpack:"keys"`
 }
 
-func (s *VisualizationService) Delete(ctx context.Context, req VisualizationDeleteRequest) (res types.Nil, err error) {
+func (s *VisService) Delete(ctx context.Context, req VisDeleteRequest) (res types.Nil, err error) {
 	return res, s.WithTx(ctx, func(tx gorp.Tx) error {
 		return s.internal.NewWriter(tx).Delete(ctx, req.Keys...)
 	})

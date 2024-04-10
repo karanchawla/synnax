@@ -200,7 +200,7 @@ func start(cmd *cobra.Command) {
 			Authenticator:   authenticator,
 			Enforcer:        access.AllowAll{},
 			PID:             pidSvc,
-			Visualization:   VisualizationSvc,
+			Vis:             VisualizationSvc,
 			Insecure:        config.Bool(insecure),
 			Channel:         dist.Channel,
 			Framer:          dist.Framer,

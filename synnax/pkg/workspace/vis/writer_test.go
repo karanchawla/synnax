@@ -20,10 +20,7 @@ import (
 var _ = Describe("Writer", func() {
 	Describe("Create", func() {
 		It("Should create a Vis", func() {
-			pid := vis.Vis{
-				Name: "test",
-				Data: "data",
-			}
+			pid := vis.Vis{Name: "test", Data: "data"}
 			Expect(svc.NewWriter(tx).Create(ctx, ws.Key, &pid)).To(Succeed())
 			Expect(pid.Key).ToNot(Equal(uuid.Nil))
 		})

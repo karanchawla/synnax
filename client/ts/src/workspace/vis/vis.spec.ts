@@ -15,20 +15,21 @@ const client = newClient();
 
 const ZERO_UUID = "00000000-0000-0000-0000-000000000000";
 
-describe("LinePlot", () => {
+describe("Vis", () => {
   describe("create", () => {
     test("create one", async () => {
       const ws = await client.workspaces.create({
         name: "PID",
         layout: { one: 1 },
       });
-      const linePlot = await client.workspaces.linePlot.create(ws.key, {
+      const vis = await client.workspaces.vis.create(ws.key, {
         name: "PID",
+        type: "pid",
         data: { one: 1 },
       });
-      expect(linePlot.name).toEqual("PID");
-      expect(linePlot.key).not.toEqual(ZERO_UUID);
-      expect(linePlot.data.one).toEqual(1);
+      expect(vis.name).toEqual("PID");
+      expect(vis.key).not.toEqual(ZERO_UUID);
+      expect(vis.data.one).toEqual(1);
     });
   });
   describe("rename", () => {
@@ -37,12 +38,13 @@ describe("LinePlot", () => {
         name: "PID",
         layout: { one: 1 },
       });
-      const linePlot = await client.workspaces.linePlot.create(ws.key, {
+      const linePlot = await client.workspaces.vis.create(ws.key, {
         name: "PID",
+        type: "pid",
         data: { one: 1 },
       });
-      await client.workspaces.linePlot.rename(linePlot.key, "PID2");
-      const res = await client.workspaces.linePlot.retrieve(linePlot.key);
+      await client.workspaces.vis.rename(linePlot.key, "PID2");
+      const res = await client.workspaces.vis.retrieve(linePlot.key);
       expect(res.name).toEqual("PID2");
     });
   });
@@ -52,12 +54,13 @@ describe("LinePlot", () => {
         name: "PID",
         layout: { one: 1 },
       });
-      const linePlot = await client.workspaces.linePlot.create(ws.key, {
+      const linePlot = await client.workspaces.vis.create(ws.key, {
         name: "PID",
+        type: "pid",
         data: { one: 1 },
       });
-      await client.workspaces.linePlot.setData(linePlot.key, { two: 2 });
-      const res = await client.workspaces.linePlot.retrieve(linePlot.key);
+      await client.workspaces.vis.setData(linePlot.key, { two: 2 });
+      const res = await client.workspaces.vis.retrieve(linePlot.key);
       expect(res.data.two).toEqual(2);
     });
   });
@@ -67,12 +70,13 @@ describe("LinePlot", () => {
         name: "PID",
         layout: { one: 1 },
       });
-      const linePlot = await client.workspaces.linePlot.create(ws.key, {
+      const linePlot = await client.workspaces.vis.create(ws.key, {
         name: "PID",
+        type: "pid",
         data: { one: 1 },
       });
-      await client.workspaces.linePlot.delete(linePlot.key);
-      await expect(client.workspaces.linePlot.retrieve(linePlot.key)).rejects.toThrow();
+      await client.workspaces.vis.delete(linePlot.key);
+      await expect(client.workspaces.vis.retrieve(linePlot.key)).rejects.toThrow();
     });
   });
 });

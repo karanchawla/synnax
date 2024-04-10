@@ -57,10 +57,7 @@ func NewService(configs ...Config) (*Service, error) {
 
 func (s *Service) NewWriter(tx gorp.Tx) Writer {
 	tx = gorp.OverrideTx(s.DB, tx)
-	return Writer{
-		tx:  tx,
-		otg: s.Ontology.NewWriter(tx),
-	}
+	return Writer{tx: tx, otg: s.Ontology.NewWriter(tx)}
 }
 
 func (s *Service) NewRetrieve() Retrieve {
