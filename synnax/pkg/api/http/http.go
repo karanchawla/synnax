@@ -76,13 +76,6 @@ func New(router *fhttp.Router) (t api.Transport) {
 	t.VisSetData = fhttp.UnaryServer[api.VisSetDataRequest, types.Nil](router, "/api/v1/workspace/vis/set-data")
 	t.VisCopy = fhttp.UnaryServer[api.VisCopyRequest, api.VisCopyResponse](router, "/api/v1/workspace/vis/copy")
 
-	// LINE PLOT
-	t.VisCreate = fhttp.UnaryServer[api.VisCreateRequest, api.VisCreateResponse](router, "/api/v1/workspace/Vis/create")
-	t.VisRetrieve = fhttp.UnaryServer[api.VisRetrieveRequest, api.VisRetrieveResponse](router, "/api/v1/workspace/Vis/retrieve")
-	t.VisDelete = fhttp.UnaryServer[api.VisDeleteRequest, types.Nil](router, "/api/v1/workspace/Vis/delete")
-	t.VisRename = fhttp.UnaryServer[api.VisRenameRequest, types.Nil](router, "/api/v1/workspace/Vis/rename")
-	t.VisSetData = fhttp.UnaryServer[api.VisSetDataRequest, types.Nil](router, "/api/v1/workspace/Vis/set-data")
-
 	// LABEL
 	t.LabelCreate = fhttp.UnaryServer[api.LabelCreateRequest, api.LabelCreateResponse](router, "/api/v1/label/create")
 	t.LabelRetrieve = fhttp.UnaryServer[api.LabelRetrieveRequest, api.LabelRetrieveResponse](router, "/api/v1/label/retrieve")

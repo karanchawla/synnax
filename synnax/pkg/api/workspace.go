@@ -137,21 +137,21 @@ func NewVisService(p Provider) *VisService {
 
 type VisCreateRequest struct {
 	Workspace uuid.UUID `json:"workspace" msgpack:"workspace"`
-	Viss      []vis.Vis `json:"line_plots" msgpack:"line_plots"`
+	Vis       []vis.Vis `json:"vis" msgpack:"vis"`
 }
 
 type VisCreateResponse struct {
-	Viss []vis.Vis `json:"viss" msgpack:"viss"`
+	Vis []vis.Vis `json:"vis" msgpack:"vis"`
 }
 
 func (s *VisService) Create(ctx context.Context, req VisCreateRequest) (res VisCreateResponse, err error) {
 	return res, s.WithTx(ctx, func(tx gorp.Tx) error {
-		for _, lp := range req.Viss {
+		for _, lp := range req.Vis {
 			err := s.internal.NewWriter(tx).Create(ctx, req.Workspace, &lp)
 			if err != nil {
 				return err
 			}
-			res.Viss = append(res.Viss, lp)
+			res.Vis = append(res.Vis, lp)
 		}
 		return err
 	})

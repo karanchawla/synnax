@@ -157,7 +157,7 @@ type Transport struct {
 	WorkspaceDelete    freighter.UnaryServer[WorkspaceDeleteRequest, types.Nil]
 	WorkspaceRename    freighter.UnaryServer[WorkspaceRenameRequest, types.Nil]
 	WorkspaceSetLayout freighter.UnaryServer[WorkspaceSetLayoutRequest, types.Nil]
-	// LINE PLOT
+	// VIS
 	VisCreate   freighter.UnaryServer[VisCreateRequest, VisCreateResponse]
 	VisRetrieve freighter.UnaryServer[VisRetrieveRequest, VisRetrieveResponse]
 	VisDelete   freighter.UnaryServer[VisDeleteRequest, types.Nil]
