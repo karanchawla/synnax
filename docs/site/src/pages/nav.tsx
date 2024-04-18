@@ -7,12 +7,12 @@
 // License, use of this software will be governed by the Apache License, Version 2.0,
 // included in the file licenses/APL.txt.
 
+import { conceptsNav } from "@/pages/concepts/nav";
+import { consoleNav } from "@/pages/console/nav";
+import { deploymentNav } from "@/pages/deployment/nav";
+import { guidesNav } from "@/pages/guides/nav";
+import { pythonClientNav } from "@/pages/python-client/nav";
 import { typescriptClientNav } from "@/pages/typescript-client/nav";
-import { conceptsNav } from "./concepts/nav";
-import { consoleNav } from "./console/nav";
-import { deploymentNav } from "./deployment/nav";
-import { guidesNav } from "./guides/nav";
-import { pythonClientNav } from "./python-client/nav";
 
 export const pages = [
   {

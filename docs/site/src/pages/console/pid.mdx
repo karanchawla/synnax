@@ -1,6 +1,6 @@
 ---
 layout: "@/layouts/MainLayout.astro"
-title: "P&ID Control"
+title: "P&IDs"
 description: "This page describes how to use the P&ID visualization in the Synnax Console."
 ---
 import { Image } from "@/components/Media";
@@ -17,7 +17,6 @@ channels tied to actuators. We've added a simple example of a P&ID below.
 ## Creating a P&ID
 
 Creating a P&ID is as simple as adding a new tab and selecting the P&ID visualization.
-
 
 <Video client:only="react" id="console/pid-create-pid" />
 
@@ -36,10 +35,10 @@ activate them.
 
 ## The Symbols Library
 
-<Text.Text level="p"> A P&ID is assembled by dragging symbols out of the library and onto
-the screen. These visual representation of sensors, actuators, and other components on
-your hardware system. If the symbols are not appearing on the bottom of the screen, make 
-sure to click the visualization <Icon.Visualize/> icon in the bottom right. </Text.Text>
+<Text.Text level="p"> To assemble a P&ID, drag symbols from the library onto the screen.
+Symbols are visual representations of sensors, actuators, and other components on
+your hardware system. If the library is not appearing in the bottom screen, make 
+sure to click the visualization <Icon.Visualize/> icon in the bottom right corner. </Text.Text>
 
 Synnax has a collection of built-in symbols including valves, live sensor values, buttons,
 and tanks.
@@ -104,10 +103,11 @@ You can also change the color of multiple symbols together in the same manner.
 
 ## Control mode
 
-In control mode, elements on the PID are able to be activated for manual control
-of the system. Clicking on an actionable element, such as a valve, switch, or
-button, allows you to activate the output channel on that element. The circle on
-the element shows what is in control. If the circle is blue, the current PID
+In control mode, you can interact with the P&ID to control the system. By clicking
+on a controllable element, such as a valve, switch, or button, you send a value to its 
+output channel.
+
+The circle on the element shows what is in control. If the circle is blue, the current PID
 view has control. If the circle is green, the current PID view has absolute
 control. If the circle is red, the current PID view does not have control as the
 element is part of an automated sequence or controlled by another PID view.
